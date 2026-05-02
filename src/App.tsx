@@ -17,7 +17,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      {/* Added the basename here so React Router knows about the GitHub sub-folder */}
+      <BrowserRouter basename="/qtutor-website-page/">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />

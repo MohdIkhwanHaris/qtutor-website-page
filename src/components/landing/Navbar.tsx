@@ -45,10 +45,10 @@ const Navbar = () => {
       <div className="container px-4 md:px-6 flex items-center justify-between h-16">
         <button onClick={() => scrollTo("#hero")} className="flex items-center gap-2">
           <img 
-            src="/QTutorLogo.png" 
-            alt="QTutor Logo" 
-            className="h-10 w-auto md:h-12" 
-          />
+  src={`${import.meta.env.BASE_URL}QTutorLogo.png`} 
+  alt="QTutor Logo" 
+  className="h-10 w-auto md:h-12" 
+/>
         </button>
 
         {/* Desktop Menu */}
