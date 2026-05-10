@@ -9,25 +9,25 @@ const content = {
     milestones: [
       {
         id: "m1",
-        image: "feature-meet.jpeg",
+        image: "feature-meet.jpg",
         title: "2 Hrs / week",
         description: "2 hrs live Google Meet session class to learn, solve questions & QnA.",
       },
       {
         id: "m2",
-        image: "feature-quiz.jpeg",
+        image: "feature-quiz.jpg",
         title: "Weekly Quizzes",
         description: "Play Quizizz to track progress and compete with your classmates every week!",
       },
       {
         id: "m3",
-        image: "feature-recording.jpeg",
+        image: "feature-recording.jpg",
         title: "Access to Recording",
         description: "Access past lessons anytime. Rewatch and revise at your own pace.",
       },
       {
         id: "m4",
-        image: "feature-community.jpeg",
+        image: "feature-community.jpg",
         title: "Study Community",
         description: "Join our WhatsApp group to discuss, share tips, and stay motivated.",
       },
@@ -40,25 +40,25 @@ const content = {
     milestones: [
       {
         id: "m1",
-        image: "feature-meet.jpeg",
+        image: "feature-meet.jpg",
         title: "2 Jam / minggu",
         description: "Sesi kelas Google Meet secara langsung selama 2 jam untuk belajar, menyelesaikan soalan & QnA.",
       },
       {
         id: "m2",
-        image: "feature-quiz.jpeg",
+        image: "feature-quiz.jpg",
         title: "Kuiz Mingguan",
         description: "Main Quizizz untuk menjejaki kemajuan dan bersaing dengan rakan sekelas setiap minggu!",
       },
       {
         id: "m3",
-        image: "feature-recording.jpeg",
+        image: "feature-recording.jpg",
         title: "Akses Rakaman",
         description: "Akses sesi lepas bila-bila masa. Tonton semula dan ulang kaji mengikut rentak anda.",
       },
       {
         id: "m4",
-        image: "feature-community.jpeg",
+        image: "feature-community.jpg",
         title: "Komuniti Pembelajaran",
         description: "Sertai group WhatsApp kami untuk berbincang, kongsi tip, dan kekal bermotivasi.",
       },
@@ -71,7 +71,8 @@ const JourneySection = () => {
   const currentText = content[language]; // Grab the correct text dictionary
 
   return (
-    <section id="journey" className="py-16 md:py-24 bg-card">
+    // CHANGED: bg-card is now bg-slate-50/50 for a subtle contrast
+    <section id="journey" className="py-16 md:py-24 bg-slate-50/50">
       <div className="container px-4 md:px-6">
         <motion.div
           className="text-center mb-12"
