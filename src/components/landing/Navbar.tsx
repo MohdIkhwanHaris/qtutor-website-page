@@ -10,7 +10,7 @@ const content = {
       { label: "Home", href: "#hero" },
       { label: "Pricing", href: "#pricing" },
       { label: "Reviews", href: "#testimonials" },
-      { label: "Tutors", href: "#tutors" },
+      //{ label: "Tutors", href: "#tutors" }, Temp disabled
       { label: "FAQ", href: "#faq" },
     ],
     loginBtn: "Log In",
@@ -21,7 +21,7 @@ const content = {
       { label: "Utama", href: "#hero" },
       { label: "Pakej", href: "#pricing" },
       { label: "Ulasan", href: "#testimonials" },
-      { label: "Tutor", href: "#tutors" },
+      //{ label: "Tutor", href: "#tutors" }, Temp disabled
       { label: "Soalan Lazim", href: "#faq" },
     ],
     loginBtn: "Log Masuk",

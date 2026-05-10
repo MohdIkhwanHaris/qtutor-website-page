@@ -15,7 +15,9 @@ const Index = () => {
       <HeroSection />
       <PricingSection />
       <TestimonialsSection />
-      <TutorsSection />
+
+      {/* Temp hide the Tutor section */}
+      {/*<TutorsSection />*/}
       <JourneySection />
       <FAQSection />
       <CTASection />

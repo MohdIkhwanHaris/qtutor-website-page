@@ -18,7 +18,7 @@ const content = {
       {
         id: "t2",
         name: "Form 5 Student",
-        role: "Seminar QTutor",
+        role: "QTutor Seminar",
         text: "SAYA DPAT A UNEXPECTED SUMPAHH. Dari F1 sampai F4 asyik gagal... Tak sia-sia saya join kelas last minute miss! 😭😭",
         rating: 5,
       },
@@ -53,21 +53,21 @@ const content = {
       {
         id: "t2",
         name: "Pelajar Tingkatan 5",
-        role: "Pelajar Saat Akhir",
+        role: "Seminar QTutor",
         text: "SAYA DPAT A UNEXPECTED SUMPAHH. Dari F1 sampai F4 asyik gagal... Tak sia-sia saya join kelas last minute miss! 😭😭",
         rating: 5,
       },
       {
         id: "t3",
         name: "Calon SPM",
-        role: "Pelajar Kelas Intensif",
+        role: "Kelas QTutor",
         text: "TQ miss kerana miss saya dapat melonjak daripada G kepada A. Tak expect pun dapat A 😭",
         rating: 5,
       },
       {
         id: "t4",
         name: "Bekas Pelajar",
-        role: "Pelajar Bengkel Peperiksaan",
+        role: "Kelas QTutor",
         text: "Tadi baru check result, masyaAllah tak sangka math saya tak pernah lulus jadi A-",
         rating: 5,
       },

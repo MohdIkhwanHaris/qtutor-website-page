@@ -28,7 +28,8 @@ const content = {
           "Study notes provided",
         ],
         popular: true,
-        whatsappMessage: "Hi QTutor! I am interested in registering for the Group Math Class (RM45/month). Can I get more details?",
+        // Changed to strictly Malay
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
       },
       {
         id: "personal-4",
@@ -43,7 +44,8 @@ const content = {
           "Custom notes & exercises",
         ],
         popular: false,
-        whatsappMessage: "Hi QTutor! I am interested in registering for the 4-Hour Personal Class (RM140/subject). Can I get more details?",
+        // Changed to strictly Malay
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 4 Jam (RM140/subjek). Boleh saya dapatkan maklumat lanjut?",
       },
       {
         id: "personal-8",
@@ -58,7 +60,8 @@ const content = {
           "Custom notes & exercises",
         ],
         popular: false,
-        whatsappMessage: "Hi QTutor! I am interested in registering for the 8-Hour Personal Class (RM260/subject). Can I get more details?",
+        // Changed to strictly Malay
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 8 Jam (RM260/subjek). Boleh saya dapatkan maklumat lanjut?",
       },
       {
         id: "personal-12",
@@ -73,7 +76,8 @@ const content = {
           "Custom notes & exercises",
         ],
         popular: false,
-        whatsappMessage: "Hi QTutor! I am interested in registering for the 12-Hour Personal Class (RM380/subject). Can I get more details?",
+        // Changed to strictly Malay
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 12 Jam (RM380/subjek). Boleh saya dapatkan maklumat lanjut?",
       },
     ],
     timetable: [
@@ -167,12 +171,11 @@ const content = {
 };
 
 const PricingSection = () => {
-  const { language } = useLanguage(); // Ask the app which language is active
-  const currentText = content[language]; // Grab the correct text dictionary
+  const { language } = useLanguage(); 
+  const currentText = content[language]; 
 
-  // Function to handle the WhatsApp redirect
   const handleWhatsAppClick = (message: string) => {
-    const phoneNumber = "601137087872"; // Your number formatted for the API
+    const phoneNumber = "601137087872"; 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
   };
@@ -180,7 +183,6 @@ const PricingSection = () => {
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50">
       <div className="container px-4 md:px-6">
-        {/* Header */}
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -199,7 +201,6 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-20">
           {currentText.plans.map((plan, i) => (
             <motion.div
@@ -256,7 +257,6 @@ const PricingSection = () => {
           ))}
         </div>
 
-        {/* Timetable Section */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
