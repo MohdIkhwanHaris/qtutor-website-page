@@ -9,25 +9,25 @@ const content = {
     milestones: [
       {
         id: "m1",
-        image: "feature-meet.jpg",
+        image: "feature-meet.jpeg",
         title: "2 Hrs / week",
         description: "2 hrs live Google Meet session class to learn, solve questions & QnA.",
       },
       {
         id: "m2",
-        image: "feature-quiz.jpg",
+        image: "feature-quiz.jpeg",
         title: "Weekly Quizzes",
         description: "Play Quizizz to track progress and compete with your classmates every week!",
       },
       {
         id: "m3",
-        image: "feature-recording.jpg",
+        image: "feature-recording.jpeg",
         title: "Access to Recording",
         description: "Access past lessons anytime. Rewatch and revise at your own pace.",
       },
       {
         id: "m4",
-        image: "feature-community.jpg",
+        image: "feature-community.jpeg",
         title: "Study Community",
         description: "Join our WhatsApp group to discuss, share tips, and stay motivated.",
       },
@@ -40,25 +40,25 @@ const content = {
     milestones: [
       {
         id: "m1",
-        image: "feature-meet.jpg",
+        image: "feature-meet.jpeg",
         title: "2 Jam / minggu",
         description: "Sesi kelas Google Meet secara langsung selama 2 jam untuk belajar, menyelesaikan soalan & QnA.",
       },
       {
         id: "m2",
-        image: "feature-quiz.jpg",
+        image: "feature-quiz.jpeg",
         title: "Kuiz Mingguan",
         description: "Main Quizizz untuk menjejaki kemajuan dan bersaing dengan rakan sekelas setiap minggu!",
       },
       {
         id: "m3",
-        image: "feature-recording.jpg",
+        image: "feature-recording.jpeg",
         title: "Akses Rakaman",
         description: "Akses sesi lepas bila-bila masa. Tonton semula dan ulang kaji mengikut rentak anda.",
       },
       {
         id: "m4",
-        image: "feature-community.jpg",
+        image: "feature-community.jpeg",
         title: "Komuniti Pembelajaran",
         description: "Sertai group WhatsApp kami untuk berbincang, kongsi tip, dan kekal bermotivasi.",
       },

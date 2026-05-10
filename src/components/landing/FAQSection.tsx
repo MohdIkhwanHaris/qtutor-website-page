@@ -36,12 +36,17 @@ const content = {
       {
         id: "q5",
         q: "Are the live classes recorded?",
-        a: "Yes! All live classes are recorded. Students can rewatch the sessions anytime for revision or if they happen to miss a class.",
+        a: "Yes! All live classes are recorded and uploaded directly to the student dashboard. Students can log in and rewatch the sessions anytime for revision or if they happen to miss a class.",
       },
       {
         id: "q6",
         q: "What payment methods do you accept?",
-        a: "We accept DuitNow, and standard online banking through our secure payment gateway for simple and fast enrollments.",
+        a: "We accept DuitNow, FPX, and standard online banking through our secure payment gateway for simple and fast enrollments.",
+      },
+      {
+        id: "q7",
+        q: "What happens after my subscription expires?",
+        a: "Your dashboard access will be temporarily paused. You can easily renew your plan at any time through your account to regain full access to all your class materials and recordings.",
       },
     ]
   },
@@ -73,23 +78,29 @@ const content = {
       {
         id: "q5",
         q: "Adakah kelas langsung ini dirakam?",
-        a: "Ya! Semua kelas langsung dirakam. Pelajar boleh menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
+        a: "Ya! Semua kelas langsung dirakam dan dimuat naik terus ke papan pemuka (dashboard) pelajar. Pelajar boleh log masuk dan menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
       },
       {
         id: "q6",
         q: "Apakah kaedah pembayaran yang diterima?",
-        a: "Kami menerima DuitNow, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
+        a: "Kami menerima DuitNow, FPX, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
+      },
+      {
+        id: "q7",
+        q: "Apakah yang terjadi selepas langganan saya tamat?",
+        a: "Akses ke papan pemuka anda akan dihentikan sementara. Anda boleh memperbaharui pelan anda dengan mudah pada bila-bila masa melalui akaun anda untuk mendapatkan semula akses penuh kepada semua bahan kelas dan rakaman.",
       },
     ]
   }
 };
 
 const FAQSection = () => {
-  const { language } = useLanguage(); // Ask the app which language is active
-  const currentText = content[language]; // Grab the correct text dictionary
+  const { language } = useLanguage(); 
+  const currentText = content[language]; 
 
   return (
-    <section id="faq" className="py-16 md:py-24 bg-slate-50/50">
+    // CHANGED: bg-slate-50/50 is now bg-white to alternate correctly!
+    <section id="faq" className="py-16 md:py-24 bg-white">
       <div className="container px-4 md:px-6">
         <motion.div
           className="text-center mb-12"
