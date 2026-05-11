@@ -10,24 +10,24 @@ const content = {
     tutors: [
       {
         id: "t1",
-        name: "Unavailable",
+        name: "Adam Aminuddin",
         specialty: "SPM Add Maths & Maths",
         experience: "8 years teaching experience",
-        initials: "U",
+        initials: "AA",
       },
       {
         id: "t2",
-        name: "Unavailable",
+        name: "Puteri Aina",
         specialty: "PT3 Mathematics",
         experience: "5 years teaching experience",
-        initials: "U",
+        initials: "PA",
       },
       {
         id: "t3",
-        name: "Unavailable",
+        name: "Siti Nur Aisyah",
         specialty: "Form 1-3 Mathematics",
         experience: "6 years teaching experience",
-        initials: "U",
+        initials: "SNA",
       },
     ]
   },

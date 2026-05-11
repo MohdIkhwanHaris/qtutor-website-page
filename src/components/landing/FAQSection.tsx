@@ -36,12 +36,12 @@ const content = {
       {
         id: "q5",
         q: "Are the live classes recorded?",
-        a: "Yes! All live classes are recorded and uploaded directly to the student dashboard. Students can log in and rewatch the sessions anytime for revision or if they happen to miss a class.",
+        a: "Yes! All live classes are recorded. Students can log in and rewatch the sessions anytime for revision or if they happen to miss a class.",
       },
       {
         id: "q6",
         q: "What payment methods do you accept?",
-        a: "We accept DuitNow, FPX, and standard online banking through our secure payment gateway for simple and fast enrollments.",
+        a: "We accept DuitNow, and standard online banking through our secure payment gateway for simple and fast enrollments.",
       },
       {
         id: "q7",
@@ -78,12 +78,12 @@ const content = {
       {
         id: "q5",
         q: "Adakah kelas langsung ini dirakam?",
-        a: "Ya! Semua kelas langsung dirakam dan dimuat naik terus ke papan pemuka (dashboard) pelajar. Pelajar boleh log masuk dan menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
+        a: "Ya! Semua kelas langsung dirakam. Pelajar boleh log masuk dan menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
       },
       {
         id: "q6",
         q: "Apakah kaedah pembayaran yang diterima?",
-        a: "Kami menerima DuitNow, FPX, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
+        a: "Kami menerima DuitNow, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
       },
       {
         id: "q7",
