@@ -43,11 +43,6 @@ const content = {
         q: "What payment methods do you accept?",
         a: "We accept DuitNow, and standard online banking through our secure payment gateway for simple and fast enrollments.",
       },
-      {
-        id: "q7",
-        q: "What happens after my subscription expires?",
-        a: "Your dashboard access will be temporarily paused. You can easily renew your plan at any time through your account to regain full access to all your class materials and recordings.",
-      },
     ]
   },
   ms: {
@@ -84,11 +79,6 @@ const content = {
         id: "q6",
         q: "Apakah kaedah pembayaran yang diterima?",
         a: "Kami menerima DuitNow, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
-      },
-      {
-        id: "q7",
-        q: "Apakah yang terjadi selepas langganan saya tamat?",
-        a: "Akses ke papan pemuka anda akan dihentikan sementara. Anda boleh memperbaharui pelan anda dengan mudah pada bila-bila masa melalui akaun anda untuk mendapatkan semula akses penuh kepada semua bahan kelas dan rakaman.",
       },
     ]
   }
