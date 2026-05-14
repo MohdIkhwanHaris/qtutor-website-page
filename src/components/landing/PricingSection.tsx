@@ -181,13 +181,17 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
-  // Smooth spring physics for all layout animations
-  const springConfig = { type: "spring", stiffness: 250, damping: 25 };
+  // THE MAGIC: Apple-style fluid layout transition (0 bounce, perfectly damped)
+  const smoothAppleTransition = { 
+    type: "spring", 
+    bounce: 0, 
+    duration: 0.5 
+  };
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
-      {/* Invisible overlay to close details when clicking outside */}
+      {/* Invisible overlay */}
       <AnimatePresence>
         {isPersonalExpanded && (
           <motion.div 
@@ -225,19 +229,20 @@ const PricingSection = () => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            let desktopWidth = "";
+            // Fluid Flexbox sizing ensures perfectly smooth expanding/collapsing
+            let flexWidth = "";
             if (!isPersonalExpanded) {
-              desktopWidth = plan.id === "group" ? "lg:w-[30%]" : plan.id === "personal" ? "lg:w-[40%]" : "lg:w-[30%]";
+              flexWidth = plan.id === "group" ? "lg:flex-[1.1]" : plan.id === "personal" ? "lg:flex-[1.3]" : "lg:flex-[1.1]";
             } else {
-              desktopWidth = isPersonalCard ? "lg:w-[60%]" : "lg:w-[20%]";
+              flexWidth = isPersonalCard ? "lg:flex-[3]" : "lg:flex-[0.6]";
             }
 
             return (
               <motion.div
                 layout
-                transition={springConfig}
+                transition={smoothAppleTransition}
                 key={plan.id}
-                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full ${desktopWidth} ${
+                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full ${flexWidth} ${
                   isExpanded 
                     ? "z-40 shadow-2xl lg:scale-[1.02] border-2 border-primary ring-4 ring-primary/10" 
                     : isPersonalExpanded 
@@ -247,7 +252,7 @@ const PricingSection = () => {
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
-                {/* Popular Badge - Rendered outside the flow so it perfectly centers on the border */}
+                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
@@ -265,13 +270,14 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* Close 'X' Button when expanded */}
+                {/* Close 'X' Button */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.2 }}
                       onClick={() => setIsPersonalExpanded(false)}
                       className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-50"
                     >
@@ -280,12 +286,11 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* INNER HORIZONTAL LAYOUT */}
-                <motion.div layout transition={springConfig} className="flex flex-col lg:flex-row gap-0 lg:gap-8">
+                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0">
                   
-                  {/* LEFT COLUMN (Header, Price, Features) */}
-                  <motion.div layout transition={springConfig} className="flex flex-col flex-1 min-w-0">
-                    <motion.div layout transition={springConfig} className="mb-4 flex items-center justify-between gap-3">
+                  {/* LEFT COLUMN */}
+                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0">
+                    <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
                           {plan.name}
@@ -299,7 +304,7 @@ const PricingSection = () => {
                       </motion.div>
                     </motion.div>
 
-                    <motion.div layout transition={springConfig} className="flex flex-col flex-1">
+                    <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1">
                       <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
                         {plan.prefix && (
                           <span className="text-sm font-semibold text-slate-500 mb-1">{plan.prefix}</span>
@@ -327,25 +332,28 @@ const PricingSection = () => {
                     </motion.div>
                   </motion.div>
 
-                  {/* RIGHT COLUMN (Pricing Table) */}
-                  <AnimatePresence mode="popLayout">
+                  {/* RIGHT COLUMN (The Sliding Folder Table) */}
+                  <AnimatePresence>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
                         layout
-                        initial={{ opacity: 0, x: -20, scale: 0.95 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: -20, scale: 0.95 }}
-                        transition={springConfig}
-                        className="lg:flex-1 flex flex-col bg-slate-50 p-6 rounded-xl border border-slate-200 justify-start"
+                        initial={{ opacity: 0, flex: 0, padding: 0 }}
+                        animate={{ opacity: 1, flex: 1, padding: 24 }}
+                        exit={{ opacity: 0, flex: 0, padding: 0 }}
+                        transition={smoothAppleTransition}
+                        className="flex flex-col bg-slate-50 rounded-xl border border-slate-200 justify-start overflow-hidden lg:ml-8"
                       >
-                        <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
-                        <div className="flex flex-col gap-3">
-                          {plan.extraDetails.map((detail, idx) => (
-                            <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
-                              <span className="text-base font-extrabold text-primary">{detail.value}</span>
-                            </div>
-                          ))}
+                        {/* Minimum width prevents the text from awkwardly squishing while it slides open/shut */}
+                        <div className="min-w-[280px]">
+                          <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
+                          <div className="flex flex-col gap-3">
+                            {plan.extraDetails.map((detail, idx) => (
+                              <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
+                                <span className="text-base font-extrabold text-primary">{detail.value}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     )}
@@ -353,8 +361,8 @@ const PricingSection = () => {
 
                 </motion.div>
 
-                {/* BOTTOM LAYER (Buttons span the entire width of the card!) */}
-                <motion.div layout transition={springConfig} className="mt-auto pt-2 flex flex-col gap-3">
+                {/* BOTTOM BUTTONS */}
+                <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-2 flex flex-col gap-3">
                   {isPersonalCard && !isExpanded && (
                     <button 
                       onClick={() => setIsPersonalExpanded(true)} 
