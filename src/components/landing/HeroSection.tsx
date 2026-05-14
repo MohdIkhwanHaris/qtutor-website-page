@@ -11,7 +11,7 @@ const content = {
     btnJoin: "Join Now",
     btnPlans: "View Plans",
     stats: [
-      { id: "s1", icon: Users, value: "500+", label: "Students Enrolled" },
+      { id: "s1", icon: Users, value: "2000+", label: "Students Enrolled" },
       { id: "s2", icon: GraduationCap, value: "95%", label: "Pass Rate" },
       { id: "s3", icon: Trophy, value: "4.9★", label: "Student Rating" },
     ]

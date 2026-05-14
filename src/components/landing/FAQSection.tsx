@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext"; // Import the language brain
+import { useLanguage } from "@/context/LanguageContext"; 
 
 const content = {
   en: {
@@ -20,28 +20,38 @@ const content = {
       },
       {
         id: "q2",
-        q: "What makes QTutor different from other tuition centres?",
-        a: "We focus on clear, step-by-step explanations rather than just feeding students the final answers. Our classes prioritize active interaction and follow a structured weekly system—including notes, quizzes, and continuous guidance—all at a highly affordable price.",
+        q: "How can students experience the class before joining?",
+        a: "We offer a Free Trial Class! This allows students to experience our interactive teaching style, try out our gamified learning approach, and get comfortable with the class environment before making any commitments.",
       },
       {
         id: "q3",
+        q: "What makes QTutor different from other tuition centres?",
+        a: "We offer distinct benefits based on your chosen plan. For our Group Classes, we emphasize gamified learning where students and parents can easily track progress through weekly Quizizz results. For Personal Classes, we provide detailed, personalized progress reports tailored specifically to the individual student's growth.",
+      },
+      {
+        id: "q4",
         q: "How are the classes conducted and how long are they?",
         a: "All classes are conducted live online via Google Meet. Each session typically lasts for 1 hour, which provides the perfect balance of focused learning and real-time Q&A without overwhelming the student.",
       },
       {
-        id: "q4",
+        id: "q5",
         q: "What will students receive every week?",
         a: "Every week, our students are provided with a complete learning kit: structured study notes, a live explanation session, session recordings, hands-on practice questions, and a weekly quiz or assessment to track their progress.",
       },
       {
-        id: "q5",
+        id: "q6",
         q: "Are the live classes recorded?",
-        a: "Yes! All live classes are recorded. Students can log in and rewatch the sessions anytime for revision or if they happen to miss a class.",
+        a: "Yes! All live classes are recorded and uploaded directly to the student dashboard. Students can log in and rewatch the sessions anytime for revision or if they happen to miss a class.",
       },
       {
-        id: "q6",
+        id: "q7",
         q: "What payment methods do you accept?",
-        a: "We accept DuitNow, and standard online banking through our secure payment gateway for simple and fast enrollments.",
+        a: "We accept DuitNow, FPX, and standard online banking through our secure payment gateway for simple and fast enrollments.",
+      },
+      {
+        id: "q8",
+        q: "What happens after my subscription expires?",
+        a: "Your dashboard access will be temporarily paused. You can easily renew your plan at any time through your account to regain full access to all your class materials and recordings.",
       },
     ]
   },
@@ -57,28 +67,38 @@ const content = {
       },
       {
         id: "q2",
-        q: "Apakah perbezaan QTutor berbanding pusat tuisyen lain?",
-        a: "Kami fokus kepada penerangan langkah demi langkah yang jelas, bukan sekadar memberikan jawapan akhir. Kelas kami mengutamakan interaksi aktif dan mengikuti sistem mingguan berstruktur—termasuk nota, kuiz, dan bimbingan berterusan—semuanya pada harga yang sangat berpatutan.",
+        q: "Bagaimanakah pelajar boleh merasai pengalaman kelas sebelum mendaftar?",
+        a: "Kami menawarkan Kelas Percubaan Percuma (Free Trial Class)! Ini membolehkan pelajar merasai sendiri gaya pengajaran interaktif kami, mencuba pendekatan pembelajaran gamifikasi, dan menyesuaikan diri dengan suasana kelas sebelum membuat sebarang komitmen.",
       },
       {
         id: "q3",
+        q: "Apakah perbezaan QTutor berbanding pusat tuisyen lain?",
+        a: "Kami menawarkan kelebihan tersendiri mengikut pelan pilihan anda. Untuk Kelas Berkumpulan, kami menggunakan pembelajaran gamifikasi di mana kemajuan boleh dijejaki dengan mudah melalui keputusan Quizizz mingguan. Untuk Kelas Personal pula, kami menyediakan laporan kemajuan peribadi yang terperinci khusus untuk perkembangan setiap pelajar.",
+      },
+      {
+        id: "q4",
         q: "Bagaimanakah kelas dijalankan dan berapa lamakah tempohnya?",
         a: "Semua kelas dijalankan secara langsung atas talian melalui Google Meet. Setiap sesi kebiasaannya berlangsung selama 1 jam, memberikan keseimbangan sempurna untuk pembelajaran berfokus dan sesi soal jawab langsung tanpa membebankan pelajar.",
       },
       {
-        id: "q4",
+        id: "q5",
         q: "Apakah yang pelajar akan terima setiap minggu?",
         a: "Setiap minggu, pelajar kami disediakan dengan kit pembelajaran lengkap: nota kajian berstruktur, sesi penerangan langsung, rakaman sesi, soalan latihan praktikal, dan kuiz atau penilaian mingguan untuk menjejaki kemajuan mereka.",
       },
       {
-        id: "q5",
+        id: "q6",
         q: "Adakah kelas langsung ini dirakam?",
-        a: "Ya! Semua kelas langsung dirakam. Pelajar boleh log masuk dan menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
+        a: "Ya! Semua kelas langsung dirakam dan dimuat naik terus ke papan pemuka (dashboard) pelajar. Pelajar boleh log masuk dan menonton semula sesi tersebut pada bila-bila masa untuk ulang kaji atau jika terlepas kelas.",
       },
       {
-        id: "q6",
+        id: "q7",
         q: "Apakah kaedah pembayaran yang diterima?",
-        a: "Kami menerima DuitNow, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
+        a: "Kami menerima DuitNow, FPX, dan perbankan atas talian standard melalui gerbang pembayaran selamat kami untuk pendaftaran yang mudah dan pantas.",
+      },
+      {
+        id: "q8",
+        q: "Apakah yang terjadi selepas langganan saya tamat?",
+        a: "Akses ke papan pemuka anda akan dihentikan sementara. Anda boleh memperbaharui pelan anda dengan mudah pada bila-bila masa melalui akaun anda untuk mendapatkan semula akses penuh kepada semua bahan kelas dan rakaman.",
       },
     ]
   }
@@ -89,7 +109,6 @@ const FAQSection = () => {
   const currentText = content[language]; 
 
   return (
-    // CHANGED: bg-slate-50/50 is now bg-white to alternate correctly!
     <section id="faq" className="py-16 md:py-24 bg-white">
       <div className="container px-4 md:px-6">
         <motion.div
@@ -120,12 +139,12 @@ const FAQSection = () => {
               <AccordionItem
                 key={faq.id}
                 value={`faq-${faq.id}`}
-                className="rounded-2xl bg-white border border-slate-200 px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
+                className="group rounded-2xl bg-white border border-slate-200 px-6 py-2 shadow-sm transition-all duration-300 hover:bg-primary hover:border-primary data-[state=open]:bg-primary data-[state=open]:border-primary"
               >
-                <AccordionTrigger className="text-left font-bold text-slate-900 text-[15px] hover:no-underline hover:text-primary transition-colors">
+                <AccordionTrigger className="text-left font-bold text-slate-900 text-[15px] hover:no-underline transition-colors duration-300 group-hover:text-white data-[state=open]:text-white [&>svg]:transition-colors [&>svg]:group-hover:text-white [&>svg]:data-[state=open]:text-white">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-[15px] text-slate-600 leading-relaxed pb-4">
+                <AccordionContent className="text-[15px] text-slate-600 leading-relaxed pb-4 transition-colors duration-300 group-hover:text-white/90 group-data-[state=open]:text-white/90">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>
