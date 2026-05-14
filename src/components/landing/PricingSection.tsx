@@ -46,7 +46,7 @@ const content = {
           "Math, AddMath, or English",
           "1-on-1 personalized attention",
           "Flexible packaging (4, 8, 12 hrs)",
-          "Detailed progress reports",
+          "Custom notes & exercises",
         ],
         extraDetails: [
           { label: "4 Hours / month", value: "RM140 / subject" },
@@ -124,7 +124,7 @@ const content = {
           "Matematik, AddMath, atau English",
           "Perhatian peribadi 1-on-1",
           "Pakej fleksibel (4, 8, 12 jam)",
-          "Laporan kemajuan terperinci",
+          "Nota dan latihan khusus",
         ],
         extraDetails: [
           { label: "Pakej 4 Jam", value: "RM140 / subjek" },
@@ -181,7 +181,6 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
-  // THE MAGIC: Apple-style fluid layout transition (0 bounce, perfectly damped)
   const smoothAppleTransition = { 
     type: "spring", 
     bounce: 0, 
@@ -191,7 +190,6 @@ const PricingSection = () => {
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
-      {/* Invisible overlay */}
       <AnimatePresence>
         {isPersonalExpanded && (
           <motion.div 
@@ -223,13 +221,12 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* The Cards Layout */}
-        <div className="flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6">
+        {/* CHANGED: Uses lg:items-center when expanded so the card hugs its content and eliminates the gap */}
+        <div className={`flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 ${isPersonalExpanded ? "lg:items-center" : "lg:items-stretch"} justify-center relative gap-4 lg:gap-6 transition-all duration-500`}>
           {currentText.plans.map((plan) => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            // Fluid Flexbox sizing ensures perfectly smooth expanding/collapsing
             let flexWidth = "";
             if (!isPersonalExpanded) {
               flexWidth = plan.id === "group" ? "lg:flex-[1.1]" : plan.id === "personal" ? "lg:flex-[1.3]" : "lg:flex-[1.1]";
@@ -252,7 +249,6 @@ const PricingSection = () => {
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
-                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
@@ -270,7 +266,6 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* Close 'X' Button */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
@@ -288,7 +283,6 @@ const PricingSection = () => {
 
                 <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0">
                   
-                  {/* LEFT COLUMN */}
                   <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0">
                     <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
                       <div>
@@ -332,7 +326,6 @@ const PricingSection = () => {
                     </motion.div>
                   </motion.div>
 
-                  {/* RIGHT COLUMN (The Sliding Folder Table) */}
                   <AnimatePresence>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -343,7 +336,6 @@ const PricingSection = () => {
                         transition={smoothAppleTransition}
                         className="flex flex-col bg-slate-50 rounded-xl border border-slate-200 justify-start overflow-hidden lg:ml-8"
                       >
-                        {/* Minimum width prevents the text from awkwardly squishing while it slides open/shut */}
                         <div className="min-w-[280px]">
                           <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
                           <div className="flex flex-col gap-3">
@@ -361,8 +353,8 @@ const PricingSection = () => {
 
                 </motion.div>
 
-                {/* BOTTOM BUTTONS */}
-                <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-2 flex flex-col gap-3">
+                {/* CHANGED: Uses mt-8 when expanded to pull the button up tightly against the content */}
+                <motion.div layout transition={smoothAppleTransition} className={`${isExpanded ? "mt-8" : "mt-auto"} pt-2 flex flex-col gap-3`}>
                   {isPersonalCard && !isExpanded && (
                     <button 
                       onClick={() => setIsPersonalExpanded(true)} 
@@ -387,7 +379,6 @@ const PricingSection = () => {
           })}
         </div>
 
-        {/* Timetable Section */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
