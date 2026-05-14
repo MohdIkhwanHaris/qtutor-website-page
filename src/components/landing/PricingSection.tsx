@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Check, Star, CalendarDays, Clock, Users, User } from "lucide-react";
+import { Check, Star, CalendarDays, Clock, Users, User, Target } from "lucide-react";
 import { motion } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext"; // Import the language brain
+import { useLanguage } from "@/context/LanguageContext"; 
 
 const content = {
   en: {
@@ -28,56 +28,41 @@ const content = {
           "Study notes provided",
         ],
         popular: true,
-        // Changed to strictly Malay
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
       },
       {
-        id: "personal-4",
+        id: "personal",
         name: "Personal Class",
-        badge: "4 Hours",
+        badge: "1-on-1 Focus",
         icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM140",
+        price: "RM140+",
         period: "/subject",
         features: [
-          "4 hours of 1-on-1 focus",
+          "Flexible: 4, 8, or 12 hours/month",
           "Math, AddMath, or English",
+          "1-on-1 personalized attention",
           "Custom notes & exercises",
+          "Detailed personalized progress reports",
         ],
         popular: false,
-        // Changed to strictly Malay
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 4 Jam (RM140/subjek). Boleh saya dapatkan maklumat lanjut?",
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
       },
       {
-        id: "personal-8",
-        name: "Personal Class",
-        badge: "8 Hours",
-        icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM260",
-        period: "/subject",
+        id: "seminar",
+        name: "Seminar Rescue Matematik",
+        badge: "Exam Prep",
+        icon: <Target className="w-5 h-5 text-muted-foreground" />,
+        price: "RM39",
+        period: " (Early Bird)",
         features: [
-          "8 hours of 1-on-1 focus",
-          "Math, AddMath, or English",
-          "Custom notes & exercises",
+          "Exam answering techniques",
+          "Trial exam preparation questions",
+          "Access to full class recordings",
+          "Interactive Quizizz sessions",
+          "Normal Price: RM59",
         ],
         popular: false,
-        // Changed to strictly Malay
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 8 Jam (RM260/subjek). Boleh saya dapatkan maklumat lanjut?",
-      },
-      {
-        id: "personal-12",
-        name: "Personal Class",
-        badge: "12 Hours",
-        icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM380",
-        period: "/subject",
-        features: [
-          "12 hours of 1-on-1 focus",
-          "Math, AddMath, or English",
-          "Custom notes & exercises",
-        ],
-        popular: false,
-        // Changed to strictly Malay
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 12 Jam (RM380/subjek). Boleh saya dapatkan maklumat lanjut?",
+        whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
       },
     ],
     timetable: [
@@ -115,49 +100,38 @@ const content = {
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
       },
       {
-        id: "personal-4",
+        id: "personal",
         name: "Kelas Personal",
-        badge: "4 Jam",
+        badge: "Fokus 1-on-1",
         icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM140",
+        price: "RM140+",
         period: "/subjek",
         features: [
-          "4 jam fokus 1-on-1",
+          "Fleksibel: 4, 8, atau 12 jam/bulan",
           "Matematik, AddMath, atau English",
+          "Perhatian peribadi 1-on-1",
           "Nota & latihan khusus",
+          "Laporan kemajuan peribadi terperinci",
         ],
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 4 Jam (RM140/subjek). Boleh saya dapatkan maklumat lanjut?",
+        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
       },
       {
-        id: "personal-8",
-        name: "Kelas Personal",
-        badge: "8 Jam",
-        icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM260",
-        period: "/subjek",
+        id: "seminar",
+        name: "Seminar Rescue Matematik",
+        badge: "Persediaan Peperiksaan",
+        icon: <Target className="w-5 h-5 text-muted-foreground" />,
+        price: "RM39",
+        period: " (Early Bird)",
         features: [
-          "8 jam fokus 1-on-1",
-          "Matematik, AddMath, atau English",
-          "Nota & latihan khusus",
+          "Teknik Menjawab Peperiksaan",
+          "Soalan Persediaan Trial",
+          "Akses Rakaman Kelas",
+          "Kuiz Interaktif Quizizz",
+          "Harga Biasa: RM59",
         ],
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 8 Jam (RM260/subjek). Boleh saya dapatkan maklumat lanjut?",
-      },
-      {
-        id: "personal-12",
-        name: "Kelas Personal",
-        badge: "12 Jam",
-        icon: <User className="w-5 h-5 text-muted-foreground" />,
-        price: "RM380",
-        period: "/subjek",
-        features: [
-          "12 jam fokus 1-on-1",
-          "Matematik, AddMath, atau English",
-          "Nota & latihan khusus",
-        ],
-        popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal 12 Jam (RM380/subjek). Boleh saya dapatkan maklumat lanjut?",
+        whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
       },
     ],
     timetable: [
@@ -201,7 +175,8 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-20">
+        {/* CHANGED to grid-cols-1 md:grid-cols-3 to perfectly balance the 3 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
           {currentText.plans.map((plan, i) => (
             <motion.div
               key={plan.id}
@@ -231,7 +206,7 @@ const PricingSection = () => {
                 <div className="p-2 bg-slate-50 rounded-lg">{plan.icon}</div>
               </div>
 
-              <div className="mb-6 pb-6 border-b border-slate-100">
+              <div className="mb-6 pb-6 border-b border-slate-100 flex items-baseline gap-1">
                 <span className="text-4xl font-extrabold text-slate-900">{plan.price}</span>
                 <span className="text-slate-500 text-sm font-medium">{plan.period}</span>
               </div>
