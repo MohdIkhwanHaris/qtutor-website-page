@@ -181,11 +181,11 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
-  // CHANGED: Removed "spring" to eliminate goofy text bounces. Uses smooth zero-overshoot tween.
-  const smoothAppleTransition = { 
+  // CHANGED: Custom cubic-bezier curve completely removes any possibility of physics bounces or text glitches
+  const strictLayoutTransition = { 
     type: "tween", 
-    ease: "easeInOut",
-    duration: 0.35 
+    ease: [0.25, 0.1, 0.25, 1.0], 
+    duration: 0.4 
   } as const;
 
   return (
@@ -237,7 +237,7 @@ const PricingSection = () => {
             return (
               <motion.div
                 layout
-                transition={smoothAppleTransition}
+                transition={strictLayoutTransition}
                 key={plan.id}
                 className={`relative rounded-2xl p-6 flex flex-col bg-white w-full min-w-0 ${cardWidth} ${
                   isExpanded 
@@ -253,7 +253,6 @@ const PricingSection = () => {
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
                       <motion.div
-                        layout
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
@@ -281,24 +280,26 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row h-full flex-1">
+                {/* CHANGED: Removed layout tags from internal flex containers to stop glitching text */}
+                <div className="flex flex-col lg:flex-row h-full flex-1">
                   
-                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0">
-                    <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
+                  {/* LEFT COLUMN */}
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
-                        <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
+                        <h3 className="text-lg font-bold text-slate-900 leading-tight">
                           {plan.name}
-                        </motion.h3>
-                        <motion.span layout className="text-sm font-semibold text-primary mt-1 block">
+                        </h3>
+                        <span className="text-sm font-semibold text-primary mt-1 block">
                           {plan.badge}
-                        </motion.span>
+                        </span>
                       </div>
-                      <motion.div layout className={`p-2 bg-slate-50 rounded-lg shrink-0 ${isExpanded ? "mr-6 lg:mr-0" : ""}`}>
+                      <div className={`p-2 bg-slate-50 rounded-lg shrink-0 ${isExpanded ? "mr-6 lg:mr-0" : ""}`}>
                         {plan.icon}
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
 
-                    <motion.div layout transition={smoothAppleTransition} className="flex flex-col">
+                    <div className="flex flex-col">
                       <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
                         {plan.prefix && (
                           <span className="text-sm font-semibold text-slate-500 mb-1">{plan.prefix}</span>
@@ -323,28 +324,26 @@ const PricingSection = () => {
                           </li>
                         ))}
                       </ul>
-                    </motion.div>
-                  </motion.div>
+                    </div>
+                  </div>
 
+                  {/* RIGHT COLUMN - PRICING TABLE (DESKTOP) */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
-                        layout
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: "auto" }}
                         exit={{ opacity: 0, width: 0 }}
-                        transition={smoothAppleTransition}
+                        transition={strictLayoutTransition}
                         className="hidden lg:flex overflow-hidden shrink-0 flex-col justify-start"
                       >
-                        {/* CHANGED: Wider container (w-[330px]) to prevent text collision/clipping */}
                         <div className="pl-6 w-[330px] xl:w-[360px]">
-                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6">
+                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6 mt-4 xl:mt-8">
                             <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
                             <div className="flex flex-col gap-3 xl:gap-4">
                               {plan.extraDetails.map((detail, idx) => (
                                 <div key={idx} className="flex justify-between items-center bg-white p-3.5 xl:p-4 rounded-xl shadow-sm border border-slate-100 gap-4">
                                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
-                                  {/* CHANGED: Added shrink-0 and responsive text size so price never wraps */}
                                   <span className="text-[14px] xl:text-[15px] font-extrabold text-primary whitespace-nowrap shrink-0">{detail.value}</span>
                                 </div>
                               ))}
@@ -355,14 +354,14 @@ const PricingSection = () => {
                     )}
                   </AnimatePresence>
 
+                  {/* RIGHT COLUMN - PRICING TABLE (MOBILE) */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
-                        layout
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={smoothAppleTransition}
+                        transition={strictLayoutTransition}
                         className="block lg:hidden overflow-hidden w-full"
                       >
                         <div className="pt-6 pb-2 w-full">
@@ -382,9 +381,9 @@ const PricingSection = () => {
                     )}
                   </AnimatePresence>
 
-                </motion.div>
+                </div>
 
-                <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
+                <div className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
                   {isPersonalCard && !isExpanded && (
                     <button 
                       onClick={() => setIsPersonalExpanded(true)} 
@@ -402,13 +401,14 @@ const PricingSection = () => {
                   >
                     {currentText.btnText}
                   </Button>
-                </motion.div>
+                </div>
 
               </motion.div>
             );
           })}
         </div>
 
+        {/* Timetable Section */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
