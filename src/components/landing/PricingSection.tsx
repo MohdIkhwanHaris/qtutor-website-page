@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Star, CalendarDays, Clock, Users, User, TrendingUp, X, Info } from "lucide-react";
+import { Check, Star, CalendarDays, Clock, Users, User, TrendingUp, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext"; 
 
@@ -12,6 +12,8 @@ const content = {
     popularTag: "Most Popular",
     btnText: "Get Started",
     detailsBtn: "See Details",
+    hideBtn: "Close Details",
+    viewPlanBtn: "View Plan",
     timetableTitle: "Class Timetable",
     timetableSubtitle: "Weekly schedule for QTutor Group Classes",
     plans: [
@@ -88,6 +90,8 @@ const content = {
     popularTag: "Paling Popular",
     btnText: "Mula Sekarang",
     detailsBtn: "Lihat Butiran",
+    hideBtn: "Tutup Butiran",
+    viewPlanBtn: "Lihat Pelan",
     timetableTitle: "Jadual Kelas",
     timetableSubtitle: "Jadual mingguan untuk Kelas Berkumpulan QTutor",
     plans: [
@@ -163,8 +167,8 @@ const PricingSection = () => {
   const { language } = useLanguage(); 
   const currentText = content[language]; 
   
-  // State for handling the popup modal
-  const [selectedPlan, setSelectedPlan] = useState<any | null>(null);
+  // State to track which card is currently expanded
+  const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
 
   const handleWhatsAppClick = (message: string) => {
     const phoneNumber = "601137087872"; 
@@ -173,14 +177,13 @@ const PricingSection = () => {
   };
 
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative">
+    <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       <div className="container px-4 md:px-6">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
         >
           <span className="text-sm font-bold text-primary uppercase tracking-wider">
             {currentText.badge}
@@ -193,89 +196,178 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* Custom Flexbox layout for the 1.5x sizing effect */}
+        {/* The interactive sliding accordion layout */}
         <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto mb-20 items-stretch">
-          {currentText.plans.map((plan, i) => (
-            <motion.div
-              key={plan.id}
-              /* Group card is flex-[0.8], the other two are flex-[1.2], giving exactly a 1.5x width ratio on large screens! */
-              className={`relative rounded-2xl p-6 flex flex-col bg-white w-full ${
-                plan.id === "group" ? "lg:flex-[0.8]" : "lg:flex-[1.2]"
-              } ${
-                plan.popular
-                  ? "border-2 border-primary shadow-lg lg:-translate-y-2 z-10"
-                  : "border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
-              }`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                  <Star className="w-3 h-3 fill-current" /> {currentText.popularTag}
-                </div>
-              )}
+          {currentText.plans.map((plan) => {
+            const isExpanded = expandedPlan === plan.id;
+            const isAnotherExpanded = expandedPlan !== null && !isExpanded;
 
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900">{plan.name}</h3>
-                  <span className="text-sm font-medium text-primary mt-1 block">
-                    {plan.badge}
-                  </span>
-                </div>
-                <div className="p-2 bg-slate-50 rounded-lg">{plan.icon}</div>
-              </div>
+            // Mathematical calculation for the 1.5x card sizes & expand/collapse states
+            let desktopWidth = "";
+            if (expandedPlan === null) {
+              // Group is 24%, Personal & Seminar are 36% (1.5x bigger)
+              desktopWidth = plan.id === "group" ? "lg:w-[24%]" : "lg:w-[36%]";
+            } else if (isExpanded) {
+              desktopWidth = "lg:w-[60%]"; // Expanded card dominates
+            } else {
+              desktopWidth = "lg:w-[18%]"; // Collapsed cards shrink
+            }
 
-              <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
-                {plan.prefix && (
-                  <span className="text-sm font-medium text-slate-500 mb-1">{plan.prefix}</span>
-                )}
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold text-slate-900">{plan.price}</span>
-                  <span className="text-slate-500 text-sm font-medium">{plan.period}</span>
-                </div>
-                
-                {/* Seminar original price strike-through */}
-                {plan.originalPrice && (
-                  <div className="mt-1 text-sm text-slate-400 font-medium">
-                    <span className="line-through">{plan.originalPrice}</span> Normal Price
+            return (
+              <motion.div
+                layout
+                key={plan.id}
+                onClick={() => {
+                  if (isAnotherExpanded) setExpandedPlan(plan.id);
+                }}
+                className={`relative rounded-2xl p-6 flex flex-col bg-white overflow-hidden transition-colors duration-300 w-full ${desktopWidth} ${
+                  isExpanded 
+                    ? "border-2 border-primary shadow-xl z-20" 
+                    : isAnotherExpanded 
+                      ? "border border-slate-200 shadow-sm opacity-60 hover:opacity-100 cursor-pointer z-10" 
+                      : plan.popular 
+                        ? "border-2 border-primary shadow-lg lg:-translate-y-2 z-10" 
+                        : "border border-slate-200 shadow-sm"
+                }`}
+              >
+                {/* Popular Badge (Hides smoothly when card is collapsed) */}
+                <AnimatePresence>
+                  {plan.popular && !isAnotherExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap"
+                    >
+                      <Star className="w-3 h-3 fill-current" /> {currentText.popularTag}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Card Header (Always visible) */}
+                <motion.div layout className="mb-4 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-3">
+                  <div>
+                    <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
+                      {plan.name}
+                    </motion.h3>
+                    <motion.span layout className="text-sm font-medium text-primary mt-1 block">
+                      {plan.badge}
+                    </motion.span>
                   </div>
-                )}
-              </div>
+                  <motion.div layout className="p-2 bg-slate-50 rounded-lg shrink-0">
+                    {plan.icon}
+                  </motion.div>
+                </motion.div>
 
-              <ul className="space-y-4 mb-6 flex-1">
-                {plan.features.map((f, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-sm text-slate-700">
-                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                    <span className="leading-tight">{f}</span>
-                  </li>
-                ))}
-              </ul>
+                {/* Card Body (Fades and collapses height when another card is selected) */}
+                <AnimatePresence mode="wait">
+                  {!isAnotherExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex flex-col flex-1"
+                    >
+                      {/* Price Section */}
+                      <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
+                        {plan.prefix && (
+                          <span className="text-sm font-medium text-slate-500 mb-1">{plan.prefix}</span>
+                        )}
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-4xl font-extrabold text-slate-900 whitespace-nowrap">{plan.price}</span>
+                          <span className="text-slate-500 text-sm font-medium">{plan.period}</span>
+                        </div>
+                        
+                        {/* Seminar Normal Price Strikethrough */}
+                        {plan.originalPrice && (
+                          <div className="mt-1 text-sm text-slate-400 font-medium">
+                            <span className="line-through">{plan.originalPrice}</span> Normal Price
+                          </div>
+                        )}
+                      </div>
 
-              <div className="mt-auto flex flex-col gap-3">
-                <button
-                  onClick={() => setSelectedPlan(plan)}
-                  className="text-sm text-primary font-semibold flex items-center justify-center gap-1 hover:underline w-full py-1"
-                >
-                  <Info className="w-4 h-4" />
-                  {currentText.detailsBtn}
-                </button>
+                      {/* Standard Features */}
+                      <ul className="space-y-4 mb-6 flex-1">
+                        {plan.features.map((f, idx) => (
+                          <li key={idx} className="flex items-start gap-3 text-sm text-slate-700">
+                            <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                            <span className="leading-tight">{f}</span>
+                          </li>
+                        ))}
+                      </ul>
 
-                <Button
-                  variant={plan.popular ? "default" : "outline"}
-                  size="lg"
-                  className={`w-full font-bold ${plan.popular ? "bg-[#800000] hover:bg-[#600000] text-white" : ""}`}
-                  onClick={() => handleWhatsAppClick(plan.whatsappMessage)}
-                >
-                  {currentText.btnText}
-                </Button>
-              </div>
-            </motion.div>
-          ))}
+                      {/* Expanded Details Text */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6 overflow-hidden"
+                          >
+                            <p className="text-[15px] text-slate-700 leading-relaxed font-medium">
+                              {plan.detailsText}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Buttons (Change based on expanded state) */}
+                <motion.div layout className="mt-auto pt-4 flex flex-col gap-3">
+                  {isAnotherExpanded ? (
+                    <Button 
+                      variant="ghost" 
+                      className="w-full text-slate-500 hover:text-slate-900 border border-slate-100 whitespace-nowrap" 
+                      onClick={(e) => { e.stopPropagation(); setExpandedPlan(plan.id); }}
+                    >
+                      {currentText.viewPlanBtn}
+                    </Button>
+                  ) : isExpanded ? (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        className="w-full text-slate-500" 
+                        onClick={(e) => { e.stopPropagation(); setExpandedPlan(null); }}
+                      >
+                        {currentText.hideBtn}
+                      </Button>
+                      <Button 
+                        className="w-full bg-[#800000] hover:bg-[#600000] text-white font-bold" 
+                        onClick={(e) => { e.stopPropagation(); handleWhatsAppClick(plan.whatsappMessage); }}
+                      >
+                        {currentText.btnText}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setExpandedPlan(plan.id); }} 
+                        className="text-sm text-primary font-semibold flex items-center justify-center gap-1 hover:underline w-full py-1"
+                      >
+                        <Info className="w-4 h-4" />
+                        {currentText.detailsBtn}
+                      </button>
+                      <Button 
+                        variant={plan.popular ? "default" : "outline"} 
+                        className={`w-full font-bold ${plan.popular ? "bg-[#800000] hover:bg-[#600000] text-white" : ""}`} 
+                        onClick={(e) => { e.stopPropagation(); handleWhatsAppClick(plan.whatsappMessage); }}
+                      >
+                        {currentText.btnText}
+                      </Button>
+                    </>
+                  )}
+                </motion.div>
+
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Timetable remains identical below */}
+        {/* Timetable Section */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -319,51 +411,6 @@ const PricingSection = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* The "See Details" Modal Overlay */}
-      <AnimatePresence>
-        {selectedPlan && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative"
-            >
-              <button
-                onClick={() => setSelectedPlan(null)}
-                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-slate-100 rounded-xl">{selectedPlan.icon}</div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">{selectedPlan.name}</h3>
-                  <span className="text-sm font-semibold text-primary">{selectedPlan.badge}</span>
-                </div>
-              </div>
-
-              <div className="mb-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
-                <p className="text-[15px] text-slate-700 leading-relaxed font-medium">
-                  {selectedPlan.detailsText}
-                </p>
-              </div>
-
-              <Button
-                className="w-full bg-[#800000] hover:bg-[#600000] text-white font-bold h-12"
-                onClick={() => {
-                  handleWhatsAppClick(selectedPlan.whatsappMessage);
-                  setSelectedPlan(null); // Close modal when they click WhatsApp
-                }}
-              >
-                {currentText.btnText}
-              </Button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
