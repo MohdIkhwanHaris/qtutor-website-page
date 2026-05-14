@@ -169,6 +169,7 @@ const PricingSection = () => {
   
   const [isPersonalExpanded, setIsPersonalExpanded] = useState(false);
 
+  // Close details when hitting ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsPersonalExpanded(false);
@@ -181,15 +182,17 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
+  // Pure Apple-style transition: 0 bounce, smooth ease
   const smoothAppleTransition = { 
     type: "spring", 
     bounce: 0, 
-    duration: 0.5 
+    duration: 0.45 
   };
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
+      {/* Invisible overlay for click-to-close anywhere */}
       <AnimatePresence>
         {isPersonalExpanded && (
           <motion.div 
@@ -221,17 +224,18 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* CHANGED: Uses lg:items-center when expanded so the card hugs its content and eliminates the gap */}
-        <div className={`flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 ${isPersonalExpanded ? "lg:items-center" : "lg:items-stretch"} justify-center relative gap-4 lg:gap-6 transition-all duration-500`}>
+        {/* The Cards Layout */}
+        <div className="flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6 transition-all duration-500">
           {currentText.plans.map((plan) => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            let flexWidth = "";
+            // Strict flex ratios to guarantee horizontal stretching without layout breaking
+            let flexClass = "";
             if (!isPersonalExpanded) {
-              flexWidth = plan.id === "group" ? "lg:flex-[1.1]" : plan.id === "personal" ? "lg:flex-[1.3]" : "lg:flex-[1.1]";
+              flexClass = plan.id === "personal" ? "lg:flex-[4]" : "lg:flex-[3]";
             } else {
-              flexWidth = isPersonalCard ? "lg:flex-[3]" : "lg:flex-[0.6]";
+              flexClass = isPersonalCard ? "lg:flex-[6]" : "lg:flex-[2]";
             }
 
             return (
@@ -239,7 +243,7 @@ const PricingSection = () => {
                 layout
                 transition={smoothAppleTransition}
                 key={plan.id}
-                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full ${flexWidth} ${
+                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full min-w-0 ${flexClass} ${
                   isExpanded 
                     ? "z-40 shadow-2xl lg:scale-[1.02] border-2 border-primary ring-4 ring-primary/10" 
                     : isPersonalExpanded 
@@ -249,6 +253,7 @@ const PricingSection = () => {
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
+                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
@@ -266,6 +271,7 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
+                {/* Close 'X' Button */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
@@ -281,9 +287,10 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0">
+                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0 h-full">
                   
-                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0">
+                  {/* LEFT COLUMN (Main Content) */}
+                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0 h-full">
                     <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
@@ -293,12 +300,12 @@ const PricingSection = () => {
                           {plan.badge}
                         </motion.span>
                       </div>
-                      <motion.div layout className={`p-2 bg-slate-50 rounded-lg shrink-0 ${isExpanded ? "mr-6" : ""}`}>
+                      <motion.div layout className={`p-2 bg-slate-50 rounded-lg shrink-0 ${isExpanded ? "mr-6 lg:mr-0" : ""}`}>
                         {plan.icon}
                       </motion.div>
                     </motion.div>
 
-                    <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1">
+                    <motion.div layout transition={smoothAppleTransition} className="flex flex-col">
                       <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
                         {plan.prefix && (
                           <span className="text-sm font-semibold text-slate-500 mb-1">{plan.prefix}</span>
@@ -324,27 +331,80 @@ const PricingSection = () => {
                         ))}
                       </ul>
                     </motion.div>
+
+                    {/* Left Column Buttons (Always anchored to the bottom) */}
+                    <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-4 flex flex-col gap-3 w-full">
+                      {isPersonalCard && !isExpanded && (
+                        <button 
+                          onClick={() => setIsPersonalExpanded(true)} 
+                          className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 hover:bg-primary/10 rounded-lg mb-1 transition-colors"
+                        >
+                          <Info className="w-4 h-4" />
+                          {currentText.detailsBtn}
+                        </button>
+                      )}
+                      
+                      <Button 
+                        variant={plan.popular && !isExpanded ? "default" : "outline"}
+                        className={`w-full font-bold h-12 shadow-sm shrink-0 ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white border-0" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`} 
+                        onClick={() => handleActionClick(plan.actionLink)}
+                      >
+                        {currentText.btnText}
+                      </Button>
+                    </motion.div>
                   </motion.div>
 
-                  <AnimatePresence>
+                  {/* RIGHT COLUMN (DESKTOP) - Strictly animates width to slide horizontally */}
+                  <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
                         layout
-                        initial={{ opacity: 0, flex: 0, padding: 0 }}
-                        animate={{ opacity: 1, flex: 1, padding: 24 }}
-                        exit={{ opacity: 0, flex: 0, padding: 0 }}
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "auto" }}
+                        exit={{ opacity: 0, width: 0 }}
                         transition={smoothAppleTransition}
-                        className="flex flex-col bg-slate-50 rounded-xl border border-slate-200 justify-start overflow-hidden lg:ml-8"
+                        className="hidden lg:block overflow-hidden shrink-0"
                       >
-                        <div className="min-w-[280px]">
-                          <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
-                          <div className="flex flex-col gap-3">
-                            {plan.extraDetails.map((detail, idx) => (
-                              <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
-                                <span className="text-base font-extrabold text-primary">{detail.value}</span>
-                              </div>
-                            ))}
+                        <div className="h-full pl-6 flex flex-col justify-center">
+                          {/* Fixed width prevents text-wrapping from breaking the height mid-animation */}
+                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 w-[280px] xl:w-[320px]">
+                            <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
+                            <div className="flex flex-col gap-3">
+                              {plan.extraDetails.map((detail, idx) => (
+                                <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
+                                  <span className="text-base font-extrabold text-primary whitespace-nowrap">{detail.value}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* RIGHT COLUMN (MOBILE) - Smoothly drops down below the features */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && plan.extraDetails && (
+                      <motion.div
+                        layout
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={smoothAppleTransition}
+                        className="block lg:hidden overflow-hidden w-full"
+                      >
+                        <div className="pt-6 pb-2 w-full">
+                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 w-full">
+                            <h4 className="font-extrabold text-slate-900 mb-4 text-lg">Package Pricing</h4>
+                            <div className="flex flex-col gap-3">
+                              {plan.extraDetails.map((detail, idx) => (
+                                <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
+                                  <span className="text-base font-extrabold text-primary">{detail.value}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </motion.div>
@@ -352,33 +412,12 @@ const PricingSection = () => {
                   </AnimatePresence>
 
                 </motion.div>
-
-                {/* CHANGED: Uses mt-8 when expanded to pull the button up tightly against the content */}
-                <motion.div layout transition={smoothAppleTransition} className={`${isExpanded ? "mt-8" : "mt-auto"} pt-2 flex flex-col gap-3`}>
-                  {isPersonalCard && !isExpanded && (
-                    <button 
-                      onClick={() => setIsPersonalExpanded(true)} 
-                      className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 hover:bg-primary/10 rounded-lg mb-1 transition-colors"
-                    >
-                      <Info className="w-4 h-4" />
-                      {currentText.detailsBtn}
-                    </button>
-                  )}
-                  
-                  <Button 
-                    variant={plan.popular && !isExpanded ? "default" : "outline"}
-                    className={`w-full font-bold h-12 shadow-sm ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white border-0" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`} 
-                    onClick={() => handleActionClick(plan.actionLink)}
-                  >
-                    {currentText.btnText}
-                  </Button>
-                </motion.div>
-
               </motion.div>
             );
           })}
         </div>
 
+        {/* Timetable Section */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
