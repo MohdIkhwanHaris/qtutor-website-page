@@ -44,7 +44,7 @@ const content = {
         period: "/subject",
         features: [
           "Math, AddMath, or English",
-          "1-on-1 personalized attention",
+          "1-on-1 personalized focus",
           "Flexible packaging (4, 8, 12 hrs)",
           "Custom notes & exercises",
         ],
@@ -169,7 +169,6 @@ const PricingSection = () => {
   
   const [isPersonalExpanded, setIsPersonalExpanded] = useState(false);
 
-  // Close details when hitting ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsPersonalExpanded(false);
@@ -182,17 +181,15 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
-  // Pure Apple-style transition: 0 bounce, smooth ease
   const smoothAppleTransition = { 
     type: "spring", 
     bounce: 0, 
-    duration: 0.45 
+    duration: 0.5 
   };
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
-      {/* Invisible overlay for click-to-close anywhere */}
       <AnimatePresence>
         {isPersonalExpanded && (
           <motion.div 
@@ -224,18 +221,18 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* The Cards Layout */}
-        <div className="flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6 transition-all duration-500">
+        {/* CHANGED: Switched to a wider max-w-7xl container and permanently locked items-stretch so cards never jump vertically */}
+        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6 transition-all duration-500">
           {currentText.plans.map((plan) => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            // Strict flex ratios to guarantee horizontal stretching without layout breaking
-            let flexClass = "";
+            // Using strict width percentages instead of flex ratios ensures a cleaner side-to-side slide
+            let cardWidth = "";
             if (!isPersonalExpanded) {
-              flexClass = plan.id === "personal" ? "lg:flex-[4]" : "lg:flex-[3]";
+              cardWidth = plan.id === "personal" ? "lg:w-[36%]" : "lg:w-[32%]";
             } else {
-              flexClass = isPersonalCard ? "lg:flex-[6]" : "lg:flex-[2]";
+              cardWidth = isPersonalCard ? "lg:w-[54%]" : "lg:w-[23%]";
             }
 
             return (
@@ -243,7 +240,7 @@ const PricingSection = () => {
                 layout
                 transition={smoothAppleTransition}
                 key={plan.id}
-                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full min-w-0 ${flexClass} ${
+                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full min-w-0 ${cardWidth} ${
                   isExpanded 
                     ? "z-40 shadow-2xl lg:scale-[1.02] border-2 border-primary ring-4 ring-primary/10" 
                     : isPersonalExpanded 
@@ -253,7 +250,6 @@ const PricingSection = () => {
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
-                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
@@ -271,7 +267,6 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* Close 'X' Button */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
@@ -289,7 +284,7 @@ const PricingSection = () => {
 
                 <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0 h-full">
                   
-                  {/* LEFT COLUMN (Main Content) */}
+                  {/* LEFT COLUMN */}
                   <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0 h-full">
                     <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
                       <div>
@@ -332,7 +327,7 @@ const PricingSection = () => {
                       </ul>
                     </motion.div>
 
-                    {/* Left Column Buttons (Always anchored to the bottom) */}
+                    {/* Left Column Buttons */}
                     <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-4 flex flex-col gap-3 w-full">
                       {isPersonalCard && !isExpanded && (
                         <button 
@@ -354,7 +349,7 @@ const PricingSection = () => {
                     </motion.div>
                   </motion.div>
 
-                  {/* RIGHT COLUMN (DESKTOP) - Strictly animates width to slide horizontally */}
+                  {/* RIGHT COLUMN - PRICING TABLE */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -363,17 +358,19 @@ const PricingSection = () => {
                         animate={{ opacity: 1, width: "auto" }}
                         exit={{ opacity: 0, width: 0 }}
                         transition={smoothAppleTransition}
-                        className="hidden lg:block overflow-hidden shrink-0"
+                        className="hidden lg:flex overflow-hidden shrink-0 flex-col justify-start"
                       >
-                        <div className="h-full pl-6 flex flex-col justify-center">
-                          {/* Fixed width prevents text-wrapping from breaking the height mid-animation */}
-                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 w-[280px] xl:w-[320px]">
+                        {/* Fixed width prevents wrapping during animation, maintaining perfect height */}
+                        <div className="pl-6 w-[280px] xl:w-[320px]">
+                          {/* CHANGED: Added mt-4 or mt-6 to slide the box slightly lower, balancing the visual weight */}
+                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6 mt-4 xl:mt-8">
                             <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-3 xl:gap-4">
                               {plan.extraDetails.map((detail, idx) => (
-                                <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
-                                  <span className="text-base font-extrabold text-primary whitespace-nowrap">{detail.value}</span>
+                                // CHANGED: Added gap-4 and shrink-0 to prevent "12 HOURS / MONTH" from crashing into the price
+                                <div key={idx} className="flex justify-between items-center bg-white p-3.5 xl:p-4 rounded-xl shadow-sm border border-slate-100 gap-4">
+                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
+                                  <span className="text-[15px] font-extrabold text-primary whitespace-nowrap">{detail.value}</span>
                                 </div>
                               ))}
                             </div>
@@ -383,7 +380,7 @@ const PricingSection = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* RIGHT COLUMN (MOBILE) - Smoothly drops down below the features */}
+                  {/* MOBILE EXPANDED VIEW */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -399,9 +396,9 @@ const PricingSection = () => {
                             <h4 className="font-extrabold text-slate-900 mb-4 text-lg">Package Pricing</h4>
                             <div className="flex flex-col gap-3">
                               {plan.extraDetails.map((detail, idx) => (
-                                <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
-                                  <span className="text-base font-extrabold text-primary">{detail.value}</span>
+                                <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 gap-4">
+                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
+                                  <span className="text-[15px] font-extrabold text-primary whitespace-nowrap">{detail.value}</span>
                                 </div>
                               ))}
                             </div>
