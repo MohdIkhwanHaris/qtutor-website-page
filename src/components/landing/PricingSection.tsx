@@ -44,7 +44,7 @@ const content = {
         period: "/subject",
         features: [
           "Math, AddMath, or English",
-          "1-on-1 personalized focus",
+          "1-on-1 personalized attention",
           "Flexible packaging (4, 8, 12 hrs)",
           "Custom notes & exercises",
         ],
@@ -169,6 +169,7 @@ const PricingSection = () => {
   
   const [isPersonalExpanded, setIsPersonalExpanded] = useState(false);
 
+  // Close details when hitting ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsPersonalExpanded(false);
@@ -181,15 +182,17 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
+  // Pure Apple-style transition: 0 bounce, smooth ease. Added "as const" to fix TS error!
   const smoothAppleTransition = { 
     type: "spring", 
     bounce: 0, 
     duration: 0.5 
-  };
+  } as const;
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
+      {/* Invisible overlay to close details when clicking outside */}
       <AnimatePresence>
         {isPersonalExpanded && (
           <motion.div 
@@ -221,13 +224,13 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* CHANGED: Switched to a wider max-w-7xl container and permanently locked items-stretch so cards never jump vertically */}
+        {/* Locked items-stretch so cards never jump vertically */}
         <div className="flex flex-col lg:flex-row max-w-7xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6 transition-all duration-500">
           {currentText.plans.map((plan) => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            // Using strict width percentages instead of flex ratios ensures a cleaner side-to-side slide
+            // Fluid width percentages for perfect horizontal expansion
             let cardWidth = "";
             if (!isPersonalExpanded) {
               cardWidth = plan.id === "personal" ? "lg:w-[36%]" : "lg:w-[32%]";
@@ -250,6 +253,7 @@ const PricingSection = () => {
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
+                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
                     <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
@@ -267,6 +271,7 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
+                {/* Close 'X' Button */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
@@ -282,10 +287,12 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row gap-0 h-full">
+                {/* --- INNER CONTENT CONTAINER --- */}
+                {/* Notice the flex-1 here pushes the bottom buttons down naturally */}
+                <motion.div layout transition={smoothAppleTransition} className="flex flex-col lg:flex-row h-full flex-1">
                   
-                  {/* LEFT COLUMN */}
-                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0 h-full">
+                  {/* LEFT COLUMN (Header, Price, Features) */}
+                  <motion.div layout transition={smoothAppleTransition} className="flex flex-col flex-1 min-w-0">
                     <motion.div layout transition={smoothAppleTransition} className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
@@ -326,30 +333,9 @@ const PricingSection = () => {
                         ))}
                       </ul>
                     </motion.div>
-
-                    {/* Left Column Buttons */}
-                    <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-4 flex flex-col gap-3 w-full">
-                      {isPersonalCard && !isExpanded && (
-                        <button 
-                          onClick={() => setIsPersonalExpanded(true)} 
-                          className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 hover:bg-primary/10 rounded-lg mb-1 transition-colors"
-                        >
-                          <Info className="w-4 h-4" />
-                          {currentText.detailsBtn}
-                        </button>
-                      )}
-                      
-                      <Button 
-                        variant={plan.popular && !isExpanded ? "default" : "outline"}
-                        className={`w-full font-bold h-12 shadow-sm shrink-0 ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white border-0" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`} 
-                        onClick={() => handleActionClick(plan.actionLink)}
-                      >
-                        {currentText.btnText}
-                      </Button>
-                    </motion.div>
                   </motion.div>
 
-                  {/* RIGHT COLUMN - PRICING TABLE */}
+                  {/* RIGHT COLUMN - PRICING TABLE (DESKTOP) */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -360,14 +346,12 @@ const PricingSection = () => {
                         transition={smoothAppleTransition}
                         className="hidden lg:flex overflow-hidden shrink-0 flex-col justify-start"
                       >
-                        {/* Fixed width prevents wrapping during animation, maintaining perfect height */}
+                        {/* Dynamic padding acts as the gap to prevent jerky width animations */}
                         <div className="pl-6 w-[280px] xl:w-[320px]">
-                          {/* CHANGED: Added mt-4 or mt-6 to slide the box slightly lower, balancing the visual weight */}
-                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6 mt-4 xl:mt-8">
+                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6">
                             <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
                             <div className="flex flex-col gap-3 xl:gap-4">
                               {plan.extraDetails.map((detail, idx) => (
-                                // CHANGED: Added gap-4 and shrink-0 to prevent "12 HOURS / MONTH" from crashing into the price
                                 <div key={idx} className="flex justify-between items-center bg-white p-3.5 xl:p-4 rounded-xl shadow-sm border border-slate-100 gap-4">
                                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
                                   <span className="text-[15px] font-extrabold text-primary whitespace-nowrap">{detail.value}</span>
@@ -380,7 +364,7 @@ const PricingSection = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* MOBILE EXPANDED VIEW */}
+                  {/* RIGHT COLUMN - PRICING TABLE (MOBILE) */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -409,6 +393,29 @@ const PricingSection = () => {
                   </AnimatePresence>
 
                 </motion.div>
+
+                {/* --- BOTTOM BUTTONS CONTAINER --- */}
+                {/* Spans the full width of the card. mt-auto guarantees it anchors to the bottom smoothly! */}
+                <motion.div layout transition={smoothAppleTransition} className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
+                  {isPersonalCard && !isExpanded && (
+                    <button 
+                      onClick={() => setIsPersonalExpanded(true)} 
+                      className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 hover:bg-primary/10 rounded-lg mb-1 transition-colors"
+                    >
+                      <Info className="w-4 h-4" />
+                      {currentText.detailsBtn}
+                    </button>
+                  )}
+                  
+                  <Button 
+                    variant={plan.popular && !isExpanded ? "default" : "outline"}
+                    className={`w-full font-bold h-12 shadow-sm shrink-0 ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white border-0" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`} 
+                    onClick={() => handleActionClick(plan.actionLink)}
+                  >
+                    {currentText.btnText}
+                  </Button>
+                </motion.div>
+
               </motion.div>
             );
           })}
