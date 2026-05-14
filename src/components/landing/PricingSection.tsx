@@ -12,7 +12,6 @@ const content = {
     popularTag: "Most Popular",
     btnText: "Get Started",
     detailsBtn: "See Details",
-    hideBtn: "Close Details",
     timetableTitle: "Class Timetable",
     timetableSubtitle: "Weekly schedule for QTutor Group Classes",
     plans: [
@@ -32,7 +31,7 @@ const content = {
           "WhatsApp Group support",
         ],
         popular: true,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
+        actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScVQhnvXGEe6uv1e_yXOkq6hWhrKn2qVhB5yMCwXVL1bXPGuA/viewform",
       },
       {
         id: "personal",
@@ -54,9 +53,8 @@ const content = {
           { label: "8 Hours / month", value: "RM260 / subject" },
           { label: "12 Hours / month", value: "RM380 / subject" }
         ],
-        detailsText: "Our Personal Class is entirely customized to fit your child's unique learning pace. The tutor will focus specifically on your child's weak points with tailored notes, intensive exercises, and detailed progress reports.",
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
+        actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScr8CIVoNFoQK1rTU55zPmSsNc6pT-24mkzdv00d77jtuElGA/viewform",
       },
       {
         id: "seminar",
@@ -74,7 +72,7 @@ const content = {
           "Interactive Quizizz sessions",
         ],
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
+        actionLink: "https://wa.me/601137087872?text=" + encodeURIComponent("Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?"),
       },
     ],
     timetable: [
@@ -92,7 +90,6 @@ const content = {
     popularTag: "Paling Popular",
     btnText: "Mula Sekarang",
     detailsBtn: "Lihat Butiran",
-    hideBtn: "Tutup Butiran",
     timetableTitle: "Jadual Kelas",
     timetableSubtitle: "Jadual mingguan untuk Kelas Berkumpulan QTutor",
     plans: [
@@ -112,7 +109,7 @@ const content = {
           "Sokongan Group WhatsApp",
         ],
         popular: true,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
+        actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScVQhnvXGEe6uv1e_yXOkq6hWhrKn2qVhB5yMCwXVL1bXPGuA/viewform",
       },
       {
         id: "personal",
@@ -134,9 +131,8 @@ const content = {
           { label: "Pakej 8 Jam", value: "RM260 / subjek" },
           { label: "Pakej 12 Jam", value: "RM380 / subjek" }
         ],
-        detailsText: "Kelas Personal kami direka khas untuk memenuhi rentak pembelajaran unik setiap pelajar. Tutor akan memberi tumpuan maksimum kepada kelemahan pelajar melalui nota khusus, latihan intensif, dan laporan kemajuan peribadi yang terperinci.",
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
+        actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScr8CIVoNFoQK1rTU55zPmSsNc6pT-24mkzdv00d77jtuElGA/viewform",
       },
       {
         id: "seminar",
@@ -154,7 +150,7 @@ const content = {
           "Kuiz Interaktif Quizizz",
         ],
         popular: false,
-        whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
+        actionLink: "https://wa.me/601137087872?text=" + encodeURIComponent("Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?"),
       },
     ],
     timetable: [
@@ -183,10 +179,8 @@ const PricingSection = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const handleWhatsAppClick = (message: string) => {
-    const phoneNumber = "601137087872"; 
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
+  const handleActionClick = (link: string) => {
+    window.open(link, "_blank");
   };
 
   return (
@@ -229,13 +223,12 @@ const PricingSection = () => {
             const isPersonalCard = plan.id === "personal";
             const isExpanded = isPersonalCard && isPersonalExpanded;
 
-            // Mathematical calculation for the side-to-side widths
             let desktopWidth = "";
             if (!isPersonalExpanded) {
-              // Default state: Group is slightly smaller, Personal & Seminar are slightly wider
+              // Default state
               desktopWidth = plan.id === "group" ? "lg:w-[28%]" : "lg:w-[36%]";
             } else {
-              // Expanded state: Personal dominates, the others shrink to the sides
+              // Expanded state
               desktopWidth = isPersonalCard ? "lg:w-[56%]" : "lg:w-[22%]";
             }
 
@@ -243,7 +236,8 @@ const PricingSection = () => {
               <motion.div
                 layout
                 key={plan.id}
-                className={`relative rounded-2xl p-6 flex flex-col bg-white overflow-hidden transition-all duration-500 w-full ${desktopWidth} ${
+                // REMOVED overflow-hidden here to prevent clipping the top badge!
+                className={`relative rounded-2xl p-6 flex flex-col bg-white transition-all duration-500 w-full ${desktopWidth} ${
                   isExpanded 
                     ? "z-40 shadow-2xl lg:scale-105 border-2 border-primary ring-4 ring-primary/10" 
                     : isPersonalExpanded 
@@ -282,7 +276,6 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* INNER HORIZONTAL LAYOUT (Splits side-by-side when expanded) */}
                 <motion.div layout className="flex flex-col lg:flex-row h-full gap-0 lg:gap-6">
                   
                   {/* Left Side (Main Content) */}
@@ -333,59 +326,44 @@ const PricingSection = () => {
 
                     {/* Buttons Layer */}
                     <motion.div layout className="mt-auto pt-4 flex flex-col gap-3">
-                      {isPersonalCard ? (
-                        <>
-                          {!isExpanded && (
-                            <button 
-                              onClick={() => setIsPersonalExpanded(true)} 
-                              className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 rounded-lg mb-1"
-                            >
-                              <Info className="w-4 h-4" />
-                              {currentText.detailsBtn}
-                            </button>
-                          )}
-                          <Button 
-                            variant="outline"
-                            className={`w-full font-bold h-12 ${isExpanded ? "border-slate-300 text-slate-700" : "bg-[#800000] hover:bg-[#600000] text-white"}`} 
-                            onClick={() => handleWhatsAppClick(plan.whatsappMessage)}
-                          >
-                            {currentText.btnText}
-                          </Button>
-                        </>
-                      ) : (
-                        <Button 
-                          variant={plan.popular ? "default" : "outline"} 
-                          className={`w-full font-bold h-12 ${plan.popular ? "bg-[#800000] hover:bg-[#600000] text-white" : "border-slate-300 text-slate-700"}`} 
-                          onClick={() => handleWhatsAppClick(plan.whatsappMessage)}
+                      {isPersonalCard && !isExpanded && (
+                        <button 
+                          onClick={() => setIsPersonalExpanded(true)} 
+                          className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 rounded-lg mb-1"
                         >
-                          {currentText.btnText}
-                        </Button>
+                          <Info className="w-4 h-4" />
+                          {currentText.detailsBtn}
+                        </button>
                       )}
+                      
+                      <Button 
+                        variant={plan.popular && !isExpanded ? "default" : "outline"}
+                        className={`w-full font-bold h-12 ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white" : "border-slate-300 text-slate-700"}`} 
+                        onClick={() => handleActionClick(plan.actionLink)}
+                      >
+                        {currentText.btnText}
+                      </Button>
                     </motion.div>
                   </motion.div>
 
-                  {/* Right Side (Only renders inside the expanded Personal Class) */}
+                  {/* Right Side (Pricing Table for Personal Class) */}
                   <AnimatePresence>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
                         initial={{ opacity: 0, x: -20, display: "none" }}
                         animate={{ opacity: 1, x: 0, display: "flex" }}
                         exit={{ opacity: 0, x: -20, transition: { duration: 0.2 } }}
-                        className="lg:flex-1 flex-col mt-8 lg:mt-0 bg-slate-50 p-6 rounded-xl border border-slate-200 justify-center"
+                        className="lg:flex-1 flex-col mt-8 lg:mt-0 bg-slate-50 p-6 rounded-xl border border-slate-200 justify-center overflow-hidden"
                       >
                         <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-4">
                           {plan.extraDetails.map((detail, idx) => (
-                            <div key={idx} className="flex justify-between items-center border-b border-slate-200/80 pb-3 last:border-0 last:pb-0">
-                              <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
+                            <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
                               <span className="text-base font-extrabold text-primary">{detail.value}</span>
                             </div>
                           ))}
                         </div>
-                        <p className="text-[14px] text-slate-600 mt-6 leading-relaxed font-medium">
-                          {/* @ts-ignore - We know detailsText exists for Personal Class */}
-                          {plan.detailsText}
-                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
