@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Star, CalendarDays, Clock, Users, User, TrendingUp, Info } from "lucide-react";
+import { Check, Star, CalendarDays, Clock, Users, User, Target, Info, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext"; 
 
@@ -32,7 +32,11 @@ const content = {
           "Session recordings available",
           "WhatsApp Group support",
         ],
-        detailsText: "Our structured group class offers the perfect balance of affordability and quality. With live sessions twice a week, students benefit from step-by-step explanations, weekly progress monitoring via Quizizz, and a supportive community of peers to keep them motivated.",
+        extraDetails: [
+          { label: "Frequency", value: "2 sessions/week (1 hr each)" },
+          { label: "Activities", value: "Weekly Quizizz leaderboards" },
+          { label: "Support", value: "Active peer community" }
+        ],
         popular: true,
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
       },
@@ -51,7 +55,11 @@ const content = {
           "Flexible packaging (4, 8, 12 hrs)",
           "Detailed progress reports",
         ],
-        detailsText: "Our Personal Class is entirely customized to fit your child's unique learning pace. Whether you choose the 4, 8, or 12-hour monthly package, the tutor will focus specifically on your child's weak points. Students receive tailored notes, intensive exercises, and detailed progress reports to guarantee optimal grade improvement.",
+        extraDetails: [
+          { label: "4 Hours / month", value: "RM140 / subject" },
+          { label: "8 Hours / month", value: "RM260 / subject" },
+          { label: "12 Hours / month", value: "RM380 / subject" }
+        ],
         popular: false,
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
       },
@@ -59,7 +67,7 @@ const content = {
         id: "seminar",
         name: "Seminar Rescue Math",
         badge: "Exam Prep",
-        icon: <TrendingUp className="w-5 h-5 text-muted-foreground" />,
+        icon: <Target className="w-5 h-5 text-muted-foreground" />,
         prefix: "",
         price: "RM39",
         originalPrice: "RM59",
@@ -70,7 +78,11 @@ const content = {
           "Access to full class recordings",
           "Interactive Quizizz sessions",
         ],
-        detailsText: "This intensive seminar is your shortcut to being fully prepared for Trial Exams! We will expose tested answering techniques, common question traps, and time management strategies. Registration includes full access to the session recording and our interactive Quizizz modules.",
+        extraDetails: [
+          { label: "Focus", value: "Question traps & time management" },
+          { label: "Materials", value: "Full recordings & modules included" },
+          { label: "Target", value: "Intensive crash course for Trials" }
+        ],
         popular: false,
         whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
       },
@@ -91,7 +103,7 @@ const content = {
     btnText: "Mula Sekarang",
     detailsBtn: "Lihat Butiran",
     hideBtn: "Tutup Butiran",
-    viewPlanBtn: "Lihat Pelan",
+    viewPlanBtn: "Lihat Pelan Ini",
     timetableTitle: "Jadual Kelas",
     timetableSubtitle: "Jadual mingguan untuk Kelas Berkumpulan QTutor",
     plans: [
@@ -110,7 +122,11 @@ const content = {
           "Rakaman sesi disediakan",
           "Sokongan Group WhatsApp",
         ],
-        detailsText: "Kelas kumpulan berstruktur kami menawarkan keseimbangan sempurna antara harga berpatutan dan kualiti. Dengan sesi secara langsung dua kali seminggu, pelajar mendapat manfaat daripada penerangan langkah demi langkah, pemantauan kemajuan mingguan melalui Quizizz, dan komuniti rakan sebaya yang menyokong.",
+        extraDetails: [
+          { label: "Kekerapan", value: "2 sesi/minggu (1 jam setiap sesi)" },
+          { label: "Aktiviti", value: "Papan pendahulu Quizizz mingguan" },
+          { label: "Sokongan", value: "Komuniti rakan sebaya yang aktif" }
+        ],
         popular: true,
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Matematik Berkumpulan (RM45/bulan). Boleh saya dapatkan maklumat lanjut?",
       },
@@ -129,7 +145,11 @@ const content = {
           "Pakej fleksibel (4, 8, 12 jam)",
           "Laporan kemajuan terperinci",
         ],
-        detailsText: "Kelas Personal kami direka khas untuk memenuhi rentak pembelajaran unik setiap pelajar. Sama ada anda memilih pakej 4, 8, atau 12 jam sebulan, tutor akan memberi tumpuan maksimum kepada kelemahan pelajar. Pelajar akan menerima nota yang disesuaikan, latihan intensif, dan laporan kemajuan peribadi untuk menjamin peningkatan gred.",
+        extraDetails: [
+          { label: "Pakej 4 Jam", value: "RM140 / subjek" },
+          { label: "Pakej 8 Jam", value: "RM260 / subjek" },
+          { label: "Pakej 12 Jam", value: "RM380 / subjek" }
+        ],
         popular: false,
         whatsappMessage: "Hai QTutor! Saya berminat untuk mendaftar Kelas Personal. Boleh saya dapatkan senarai harga penuh (Pakej 4, 8, dan 12 jam)?",
       },
@@ -137,7 +157,7 @@ const content = {
         id: "seminar",
         name: "Seminar Rescue Math",
         badge: "Persediaan Peperiksaan",
-        icon: <TrendingUp className="w-5 h-5 text-muted-foreground" />,
+        icon: <Target className="w-5 h-5 text-muted-foreground" />,
         prefix: "",
         price: "RM39",
         originalPrice: "RM59",
@@ -148,7 +168,11 @@ const content = {
           "Akses Rakaman Kelas",
           "Kuiz Interaktif Quizizz",
         ],
-        detailsText: "Seminar komprehensif ini adalah 'shortcut' anda untuk bersedia menghadapi peperiksaan percubaan! Kami akan mendedahkan teknik menjawab yang diuji, perangkap soalan lazim, dan strategi pengurusan masa. Pendaftaran termasuk akses penuh kepada rakaman sesi dan modul Quizizz interaktif kami.",
+        extraDetails: [
+          { label: "Fokus", value: "Perangkap soalan & pengurusan masa" },
+          { label: "Bahan", "value": "Rakaman & modul penuh disertakan" },
+          { label: "Target", value: "Kelas intensif pantas untuk Trial" }
+        ],
         popular: false,
         whatsappMessage: "Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?",
       },
@@ -167,8 +191,16 @@ const PricingSection = () => {
   const { language } = useLanguage(); 
   const currentText = content[language]; 
   
-  // State to track which card is currently expanded
   const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
+
+  // Close details when hitting ESC key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpandedPlan(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleWhatsAppClick = (message: string) => {
     const phoneNumber = "601137087872"; 
@@ -178,7 +210,21 @@ const PricingSection = () => {
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
-      <div className="container px-4 md:px-6">
+      
+      {/* Invisible overlay to close details when clicking outside */}
+      <AnimatePresence>
+        {expandedPlan && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-20 bg-slate-900/10 backdrop-blur-[2px]"
+            onClick={() => setExpandedPlan(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="container px-4 md:px-6 relative z-30">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -196,22 +242,11 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* The interactive sliding accordion layout */}
-        <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto mb-20 items-stretch">
+        {/* The Stacking Cards Layout */}
+        <div className="flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 items-stretch justify-center relative">
           {currentText.plans.map((plan) => {
             const isExpanded = expandedPlan === plan.id;
             const isAnotherExpanded = expandedPlan !== null && !isExpanded;
-
-            // Mathematical calculation for the 1.5x card sizes & expand/collapse states
-            let desktopWidth = "";
-            if (expandedPlan === null) {
-              // Group is 24%, Personal & Seminar are 36% (1.5x bigger)
-              desktopWidth = plan.id === "group" ? "lg:w-[24%]" : "lg:w-[36%]";
-            } else if (isExpanded) {
-              desktopWidth = "lg:w-[60%]"; // Expanded card dominates
-            } else {
-              desktopWidth = "lg:w-[18%]"; // Collapsed cards shrink
-            }
 
             return (
               <motion.div
@@ -220,17 +255,19 @@ const PricingSection = () => {
                 onClick={() => {
                   if (isAnotherExpanded) setExpandedPlan(plan.id);
                 }}
-                className={`relative rounded-2xl p-6 flex flex-col bg-white overflow-hidden transition-colors duration-300 w-full ${desktopWidth} ${
-                  isExpanded 
-                    ? "border-2 border-primary shadow-xl z-20" 
-                    : isAnotherExpanded 
-                      ? "border border-slate-200 shadow-sm opacity-60 hover:opacity-100 cursor-pointer z-10" 
-                      : plan.popular 
-                        ? "border-2 border-primary shadow-lg lg:-translate-y-2 z-10" 
-                        : "border border-slate-200 shadow-sm"
-                }`}
+                className={`relative rounded-2xl p-6 flex flex-col bg-white overflow-hidden transition-all duration-500 w-full lg:w-1/3
+                  ${
+                    isExpanded 
+                      ? "z-40 shadow-2xl lg:scale-105 lg:mx-4 border-2 border-primary ring-4 ring-primary/10" 
+                      : isAnotherExpanded 
+                        ? "z-10 opacity-60 lg:scale-95 lg:-mx-8 cursor-pointer hover:opacity-100 border border-slate-200" 
+                        : plan.popular 
+                          ? "border-2 border-primary shadow-lg lg:-translate-y-2 z-20 lg:mx-2" 
+                          : "border border-slate-200 shadow-sm z-10 lg:mx-2"
+                  }
+                `}
               >
-                {/* Popular Badge (Hides smoothly when card is collapsed) */}
+                {/* Popular Badge */}
                 <AnimatePresence>
                   {plan.popular && !isAnotherExpanded && (
                     <motion.div
@@ -244,8 +281,22 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* Card Header (Always visible) */}
-                <motion.div layout className="mb-4 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-3">
+                {/* Close 'X' Button when expanded */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={(e) => { e.stopPropagation(); setExpandedPlan(null); }}
+                      className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-700 bg-slate-100 rounded-full transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+
+                <motion.div layout className="mb-4 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-3 pr-6">
                   <div>
                     <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
                       {plan.name}
@@ -259,20 +310,20 @@ const PricingSection = () => {
                   </motion.div>
                 </motion.div>
 
-                {/* Card Body (Fades and collapses height when another card is selected) */}
+                {/* Main Content (Fades out when tucked away) */}
                 <AnimatePresence mode="wait">
                   {!isAnotherExpanded && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                       className="flex flex-col flex-1"
                     >
                       {/* Price Section */}
                       <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
                         {plan.prefix && (
-                          <span className="text-sm font-medium text-slate-500 mb-1">{plan.prefix}</span>
+                          <span className="text-sm font-semibold text-slate-500 mb-1">{plan.prefix}</span>
                         )}
                         <div className="flex items-baseline gap-1">
                           <span className="text-4xl font-extrabold text-slate-900 whitespace-nowrap">{plan.price}</span>
@@ -297,18 +348,23 @@ const PricingSection = () => {
                         ))}
                       </ul>
 
-                      {/* Expanded Details Text */}
+                      {/* EXTRA DETAILS SECTION (Sleek Table) */}
                       <AnimatePresence>
                         {isExpanded && (
                           <motion.div
                             initial={{ opacity: 0, height: 0, marginTop: 0 }}
                             animate={{ opacity: 1, height: "auto", marginTop: 16 }}
                             exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                            className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6 overflow-hidden"
+                            className="bg-slate-50 rounded-xl border border-slate-200 mb-6 overflow-hidden"
                           >
-                            <p className="text-[15px] text-slate-700 leading-relaxed font-medium">
-                              {plan.detailsText}
-                            </p>
+                            <div className="p-4 flex flex-col gap-3">
+                              {plan.extraDetails.map((detail, idx) => (
+                                <div key={idx} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 border-b border-slate-200/60 pb-3 last:border-0 last:pb-0">
+                                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
+                                  <span className="text-sm font-semibold text-slate-900 sm:text-right">{detail.value}</span>
+                                </div>
+                              ))}
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -316,44 +372,35 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* Buttons (Change based on expanded state) */}
+                {/* Buttons */}
                 <motion.div layout className="mt-auto pt-4 flex flex-col gap-3">
                   {isAnotherExpanded ? (
                     <Button 
                       variant="ghost" 
-                      className="w-full text-slate-500 hover:text-slate-900 border border-slate-100 whitespace-nowrap" 
+                      className="w-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 whitespace-nowrap h-12" 
                       onClick={(e) => { e.stopPropagation(); setExpandedPlan(plan.id); }}
                     >
                       {currentText.viewPlanBtn}
                     </Button>
                   ) : isExpanded ? (
-                    <>
-                      <Button 
-                        variant="outline" 
-                        className="w-full text-slate-500" 
-                        onClick={(e) => { e.stopPropagation(); setExpandedPlan(null); }}
-                      >
-                        {currentText.hideBtn}
-                      </Button>
-                      <Button 
-                        className="w-full bg-[#800000] hover:bg-[#600000] text-white font-bold" 
-                        onClick={(e) => { e.stopPropagation(); handleWhatsAppClick(plan.whatsappMessage); }}
-                      >
-                        {currentText.btnText}
-                      </Button>
-                    </>
+                    <Button 
+                      className="w-full bg-[#800000] hover:bg-[#600000] text-white font-bold h-12 shadow-md" 
+                      onClick={(e) => { e.stopPropagation(); handleWhatsAppClick(plan.whatsappMessage); }}
+                    >
+                      {currentText.btnText}
+                    </Button>
                   ) : (
                     <>
                       <button 
                         onClick={(e) => { e.stopPropagation(); setExpandedPlan(plan.id); }} 
-                        className="text-sm text-primary font-semibold flex items-center justify-center gap-1 hover:underline w-full py-1"
+                        className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 rounded-lg mb-1"
                       >
                         <Info className="w-4 h-4" />
                         {currentText.detailsBtn}
                       </button>
                       <Button 
                         variant={plan.popular ? "default" : "outline"} 
-                        className={`w-full font-bold ${plan.popular ? "bg-[#800000] hover:bg-[#600000] text-white" : ""}`} 
+                        className={`w-full font-bold h-12 ${plan.popular ? "bg-[#800000] hover:bg-[#600000] text-white" : "border-slate-300 text-slate-700"}`} 
                         onClick={(e) => { e.stopPropagation(); handleWhatsAppClick(plan.whatsappMessage); }}
                       >
                         {currentText.btnText}
@@ -385,7 +432,7 @@ const PricingSection = () => {
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
+          <div className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden relative z-10">
             <div className="divide-y divide-slate-100">
               {currentText.timetable.map((session, index) => (
                 <div 
