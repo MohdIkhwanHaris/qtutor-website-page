@@ -167,10 +167,8 @@ const PricingSection = () => {
   const { language } = useLanguage(); 
   const currentText = content[language]; 
   
-  // State specifically for expanding the Personal Class
   const [isPersonalExpanded, setIsPersonalExpanded] = useState(false);
 
-  // Close details when hitting ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsPersonalExpanded(false);
@@ -183,6 +181,9 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
+  // Smooth spring physics for all layout animations
+  const springConfig = { type: "spring", stiffness: 250, damping: 25 };
+
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       
@@ -193,6 +194,7 @@ const PricingSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-20 bg-slate-900/10 backdrop-blur-[2px]"
             onClick={() => setIsPersonalExpanded(false)}
           />
@@ -217,7 +219,7 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* The Stacking Cards Layout */}
+        {/* The Cards Layout */}
         <div className="flex flex-col lg:flex-row max-w-6xl mx-auto mb-20 items-stretch justify-center relative gap-4 lg:gap-6">
           {currentText.plans.map((plan) => {
             const isPersonalCard = plan.id === "personal";
@@ -225,39 +227,41 @@ const PricingSection = () => {
 
             let desktopWidth = "";
             if (!isPersonalExpanded) {
-              // Default state
-              desktopWidth = plan.id === "group" ? "lg:w-[28%]" : "lg:w-[36%]";
+              desktopWidth = plan.id === "group" ? "lg:w-[30%]" : plan.id === "personal" ? "lg:w-[40%]" : "lg:w-[30%]";
             } else {
-              // Expanded state
-              desktopWidth = isPersonalCard ? "lg:w-[56%]" : "lg:w-[22%]";
+              desktopWidth = isPersonalCard ? "lg:w-[60%]" : "lg:w-[20%]";
             }
 
             return (
               <motion.div
                 layout
+                transition={springConfig}
                 key={plan.id}
-                // REMOVED overflow-hidden here to prevent clipping the top badge!
-                className={`relative rounded-2xl p-6 flex flex-col bg-white transition-all duration-500 w-full ${desktopWidth} ${
+                className={`relative rounded-2xl p-6 flex flex-col bg-white w-full ${desktopWidth} ${
                   isExpanded 
-                    ? "z-40 shadow-2xl lg:scale-105 border-2 border-primary ring-4 ring-primary/10" 
+                    ? "z-40 shadow-2xl lg:scale-[1.02] border-2 border-primary ring-4 ring-primary/10" 
                     : isPersonalExpanded 
-                      ? "z-10 opacity-60 lg:scale-95 border border-slate-200" 
+                      ? "z-10 opacity-60 lg:scale-[0.98] border border-slate-200" 
                       : plan.popular 
                         ? "border-2 border-primary shadow-lg lg:-translate-y-2 z-20" 
                         : "border border-slate-200 shadow-sm z-10"
                 }`}
               >
-                {/* Popular Badge */}
+                {/* Popular Badge - Rendered outside the flow so it perfectly centers on the border */}
                 <AnimatePresence>
                   {plan.popular && !isPersonalExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap"
-                    >
-                      <Star className="w-3 h-3 fill-current" /> {currentText.popularTag}
-                    </motion.div>
+                    <div className="absolute -top-3 inset-x-0 flex justify-center pointer-events-none z-30">
+                      <motion.div
+                        layout
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="inline-flex items-center gap-1 bg-[#800000] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap pointer-events-auto"
+                      >
+                        <Star className="w-3 h-3 fill-current" /> {currentText.popularTag}
+                      </motion.div>
+                    </div>
                   )}
                 </AnimatePresence>
 
@@ -265,37 +269,37 @@ const PricingSection = () => {
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                       onClick={() => setIsPersonalExpanded(false)}
-                      className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-700 bg-slate-100 rounded-full transition-colors z-50"
+                      className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-50"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-4 h-4" />
                     </motion.button>
                   )}
                 </AnimatePresence>
 
-                <motion.div layout className="flex flex-col lg:flex-row h-full gap-0 lg:gap-6">
+                {/* INNER HORIZONTAL LAYOUT */}
+                <motion.div layout transition={springConfig} className="flex flex-col lg:flex-row gap-0 lg:gap-8">
                   
-                  {/* Left Side (Main Content) */}
-                  <motion.div layout className="flex flex-col flex-1 min-w-0">
-                    <motion.div layout className="mb-4 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-3 pr-6">
+                  {/* LEFT COLUMN (Header, Price, Features) */}
+                  <motion.div layout transition={springConfig} className="flex flex-col flex-1 min-w-0">
+                    <motion.div layout transition={springConfig} className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <motion.h3 layout className="text-lg font-bold text-slate-900 leading-tight">
                           {plan.name}
                         </motion.h3>
-                        <motion.span layout className="text-sm font-medium text-primary mt-1 block">
+                        <motion.span layout className="text-sm font-semibold text-primary mt-1 block">
                           {plan.badge}
                         </motion.span>
                       </div>
-                      <motion.div layout className="p-2 bg-slate-50 rounded-lg shrink-0">
+                      <motion.div layout className={`p-2 bg-slate-50 rounded-lg shrink-0 ${isExpanded ? "mr-6" : ""}`}>
                         {plan.icon}
                       </motion.div>
                     </motion.div>
 
-                    <motion.div layout className="flex flex-col flex-1">
-                      {/* Price Section */}
+                    <motion.div layout transition={springConfig} className="flex flex-col flex-1">
                       <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col">
                         {plan.prefix && (
                           <span className="text-sm font-semibold text-slate-500 mb-1">{plan.prefix}</span>
@@ -305,7 +309,6 @@ const PricingSection = () => {
                           <span className="text-slate-500 text-sm font-medium">{plan.period}</span>
                         </div>
                         
-                        {/* Seminar Normal Price Strikethrough */}
                         {plan.originalPrice && (
                           <div className="mt-1 text-sm text-slate-400 font-medium">
                             <span className="line-through">{plan.originalPrice}</span> Normal Price
@@ -313,8 +316,7 @@ const PricingSection = () => {
                         )}
                       </div>
 
-                      {/* Standard Features */}
-                      <ul className="space-y-4 mb-6 flex-1">
+                      <ul className="space-y-4 mb-6">
                         {plan.features.map((f, idx) => (
                           <li key={idx} className="flex items-start gap-3 text-sm text-slate-700">
                             <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -323,40 +325,21 @@ const PricingSection = () => {
                         ))}
                       </ul>
                     </motion.div>
-
-                    {/* Buttons Layer */}
-                    <motion.div layout className="mt-auto pt-4 flex flex-col gap-3">
-                      {isPersonalCard && !isExpanded && (
-                        <button 
-                          onClick={() => setIsPersonalExpanded(true)} 
-                          className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 rounded-lg mb-1"
-                        >
-                          <Info className="w-4 h-4" />
-                          {currentText.detailsBtn}
-                        </button>
-                      )}
-                      
-                      <Button 
-                        variant={plan.popular && !isExpanded ? "default" : "outline"}
-                        className={`w-full font-bold h-12 ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white" : "border-slate-300 text-slate-700"}`} 
-                        onClick={() => handleActionClick(plan.actionLink)}
-                      >
-                        {currentText.btnText}
-                      </Button>
-                    </motion.div>
                   </motion.div>
 
-                  {/* Right Side (Pricing Table for Personal Class) */}
-                  <AnimatePresence>
+                  {/* RIGHT COLUMN (Pricing Table) */}
+                  <AnimatePresence mode="popLayout">
                     {isExpanded && plan.extraDetails && (
                       <motion.div
-                        initial={{ opacity: 0, x: -20, display: "none" }}
-                        animate={{ opacity: 1, x: 0, display: "flex" }}
-                        exit={{ opacity: 0, x: -20, transition: { duration: 0.2 } }}
-                        className="lg:flex-1 flex-col mt-8 lg:mt-0 bg-slate-50 p-6 rounded-xl border border-slate-200 justify-center overflow-hidden"
+                        layout
+                        initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: -20, scale: 0.95 }}
+                        transition={springConfig}
+                        className="lg:flex-1 flex flex-col bg-slate-50 p-6 rounded-xl border border-slate-200 justify-start"
                       >
                         <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-3">
                           {plan.extraDetails.map((detail, idx) => (
                             <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{detail.label}</span>
@@ -369,6 +352,28 @@ const PricingSection = () => {
                   </AnimatePresence>
 
                 </motion.div>
+
+                {/* BOTTOM LAYER (Buttons span the entire width of the card!) */}
+                <motion.div layout transition={springConfig} className="mt-auto pt-2 flex flex-col gap-3">
+                  {isPersonalCard && !isExpanded && (
+                    <button 
+                      onClick={() => setIsPersonalExpanded(true)} 
+                      className="text-sm text-primary font-bold flex items-center justify-center gap-1 hover:underline w-full py-2 bg-primary/5 hover:bg-primary/10 rounded-lg mb-1 transition-colors"
+                    >
+                      <Info className="w-4 h-4" />
+                      {currentText.detailsBtn}
+                    </button>
+                  )}
+                  
+                  <Button 
+                    variant={plan.popular && !isExpanded ? "default" : "outline"}
+                    className={`w-full font-bold h-12 shadow-sm ${(!isExpanded && plan.popular) || isExpanded ? "bg-[#800000] hover:bg-[#600000] text-white border-0" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`} 
+                    onClick={() => handleActionClick(plan.actionLink)}
+                  >
+                    {currentText.btnText}
+                  </Button>
+                </motion.div>
+
               </motion.div>
             );
           })}
