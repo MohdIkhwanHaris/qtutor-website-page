@@ -29,6 +29,7 @@ const content = {
           "8 hours per month",
           "Session recordings available",
           "WhatsApp Group support",
+          "Interactive Quizizz sessions",
         ],
         popular: true,
         actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScVQhnvXGEe6uv1e_yXOkq6hWhrKn2qVhB5yMCwXVL1bXPGuA/viewform",
@@ -44,7 +45,7 @@ const content = {
         period: "/subject",
         features: [
           "Math, AddMath, or English",
-          "1-on-1 personalized attention",
+          "1-on-1 personalized focus",
           "Flexible packaging (4, 8, 12 hrs)",
           "Custom notes & exercises",
         ],
@@ -107,6 +108,7 @@ const content = {
           "8 jam sebulan",
           "Rakaman sesi disediakan",
           "Sokongan Group WhatsApp",
+          "Kuiz Interaktif Quizizz",
         ],
         popular: true,
         actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScVQhnvXGEe6uv1e_yXOkq6hWhrKn2qVhB5yMCwXVL1bXPGuA/viewform",
@@ -122,7 +124,7 @@ const content = {
         period: "/subjek",
         features: [
           "Matematik, AddMath, atau English",
-          "Perhatian peribadi 1-on-1",
+          "Fokus peribadi 1-on-1",
           "Pakej fleksibel (4, 8, 12 jam)",
           "Nota dan latihan khusus",
         ],
@@ -283,7 +285,7 @@ const PricingSection = () => {
                 <div className="flex flex-col lg:flex-row h-full flex-1">
                   
                   {/* LEFT COLUMN */}
-                  <motion.div layout transition={strictLayoutTransition} className="flex flex-col flex-1 min-w-0">
+                  <div className="flex flex-col flex-1 min-w-0">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <h3 className="text-lg font-bold text-slate-900 leading-tight">
@@ -324,10 +326,9 @@ const PricingSection = () => {
                         ))}
                       </ul>
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* RIGHT COLUMN - PRICING TABLE (DESKTOP) */}
-                  {/* Crucial Fix: Animating marginLeft and width to 0 ensures smooth collapse without squishing */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
@@ -337,8 +338,7 @@ const PricingSection = () => {
                         transition={strictLayoutTransition}
                         className="hidden lg:flex overflow-hidden shrink-0 flex-col justify-start"
                       >
-                        {/* Static internal width means the text absolutely never wraps or jumps */}
-                        <div className="w-[330px] xl:w-[360px]">
+                        <div className="pl-6 w-[330px] xl:w-[360px]">
                           <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6 mt-4 xl:mt-8">
                             <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
                             <div className="flex flex-col gap-3 xl:gap-4">
@@ -384,7 +384,7 @@ const PricingSection = () => {
 
                 </div>
 
-                <motion.div layout transition={strictLayoutTransition} className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
+                <div className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
                   {isPersonalCard && !isExpanded && (
                     <button 
                       onClick={() => setIsPersonalExpanded(true)} 
@@ -402,7 +402,7 @@ const PricingSection = () => {
                   >
                     {currentText.btnText}
                   </Button>
-                </motion.div>
+                </div>
 
               </motion.div>
             );
