@@ -181,11 +181,11 @@ const PricingSection = () => {
     window.open(link, "_blank");
   };
 
-  // CHANGED: Custom cubic-bezier curve completely removes any possibility of physics bounces or text glitches
+  // Completely locked tween to prevent bouncing
   const strictLayoutTransition = { 
     type: "tween", 
-    ease: [0.25, 0.1, 0.25, 1.0], 
-    duration: 0.4 
+    ease: "easeInOut", 
+    duration: 0.35 
   } as const;
 
   return (
@@ -280,11 +280,10 @@ const PricingSection = () => {
                   )}
                 </AnimatePresence>
 
-                {/* CHANGED: Removed layout tags from internal flex containers to stop glitching text */}
                 <div className="flex flex-col lg:flex-row h-full flex-1">
                   
                   {/* LEFT COLUMN */}
-                  <div className="flex flex-col flex-1 min-w-0">
+                  <motion.div layout transition={strictLayoutTransition} className="flex flex-col flex-1 min-w-0">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <h3 className="text-lg font-bold text-slate-900 leading-tight">
@@ -325,19 +324,21 @@ const PricingSection = () => {
                         ))}
                       </ul>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* RIGHT COLUMN - PRICING TABLE (DESKTOP) */}
+                  {/* Crucial Fix: Animating marginLeft and width to 0 ensures smooth collapse without squishing */}
                   <AnimatePresence initial={false}>
                     {isExpanded && plan.extraDetails && (
                       <motion.div
-                        initial={{ opacity: 0, width: 0 }}
-                        animate={{ opacity: 1, width: "auto" }}
-                        exit={{ opacity: 0, width: 0 }}
+                        initial={{ opacity: 0, width: 0, marginLeft: 0 }}
+                        animate={{ opacity: 1, width: "auto", marginLeft: 24 }} // 24px is standard Tailwind gap-6/pl-6
+                        exit={{ opacity: 0, width: 0, marginLeft: 0 }}
                         transition={strictLayoutTransition}
                         className="hidden lg:flex overflow-hidden shrink-0 flex-col justify-start"
                       >
-                        <div className="pl-6 w-[330px] xl:w-[360px]">
+                        {/* Static internal width means the text absolutely never wraps or jumps */}
+                        <div className="w-[330px] xl:w-[360px]">
                           <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 xl:p-6 mt-4 xl:mt-8">
                             <h4 className="font-extrabold text-slate-900 mb-5 text-lg">Package Pricing</h4>
                             <div className="flex flex-col gap-3 xl:gap-4">
@@ -383,7 +384,7 @@ const PricingSection = () => {
 
                 </div>
 
-                <div className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
+                <motion.div layout transition={strictLayoutTransition} className="mt-auto pt-6 flex flex-col gap-3 w-full shrink-0">
                   {isPersonalCard && !isExpanded && (
                     <button 
                       onClick={() => setIsPersonalExpanded(true)} 
@@ -401,7 +402,7 @@ const PricingSection = () => {
                   >
                     {currentText.btnText}
                   </Button>
-                </div>
+                </motion.div>
 
               </motion.div>
             );
