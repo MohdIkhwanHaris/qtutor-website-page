@@ -23,7 +23,7 @@ const content = {
     btnJoin: "Sertai Sekarang",
     btnPlans: "Lihat Pakej",
     stats: [
-      { id: "s1", icon: Users, value: "500+", label: "Pelajar Berdaftar" },
+      { id: "s1", icon: Users, value: "2000+", label: "Pelajar Berdaftar" },
       { id: "s2", icon: GraduationCap, value: "95%", label: "Kadar Lulus" },
       { id: "s3", icon: Trophy, value: "4.9★", label: "Penilaian Pelajar" },
     ]
