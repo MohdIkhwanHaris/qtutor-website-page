@@ -219,7 +219,7 @@ const PricingSection = () => {
           <div className="lg:w-1/2 bg-[#2d0a11] flex items-center justify-center p-6 border-t lg:border-t-0 lg:border-l border-slate-200">
             {/* Make sure "SeminarPoster.jpeg" is in your public folder! */}
             <img 
-              src="/SeminarPoster.jpg" 
+              src={`${import.meta.env.BASE_URL}SeminarPoster.jpeg`}
               alt="Seminar Rescue Math" 
               className="w-full h-auto max-h-[500px] object-contain rounded-xl shadow-2xl"
             />
