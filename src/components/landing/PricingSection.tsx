@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Check, Star, CalendarDays, Clock, Users, User, Target } from "lucide-react";
+import { Check, Star, CalendarDays, Clock, Users, User, Flame } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext"; 
 
@@ -15,7 +15,7 @@ const content = {
     seminar: {
       name: "Seminar Rescue Math",
       badge: "Exam Prep",
-      icon: <Target className="w-5 h-5 text-muted-foreground" />,
+      icon: <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />,
       price: "RM39",
       originalPrice: "RM59",
       period: " (Early Bird)",
@@ -88,7 +88,7 @@ const content = {
     seminar: {
       name: "Seminar Rescue Math",
       badge: "Persediaan Peperiksaan",
-      icon: <Target className="w-5 h-5 text-muted-foreground" />,
+      icon: <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />,
       price: "RM39",
       originalPrice: "RM59",
       period: " (Early Bird)",
