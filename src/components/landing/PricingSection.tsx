@@ -164,67 +164,58 @@ const PricingSection = () => {
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
       <div className="container px-4 md:px-6 relative z-30">
         
-        {/* --- SEMINAR HIGHLIGHT BANNER --- */}
-        <motion.div 
-          className="max-w-6xl mx-auto mb-24 bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col lg:flex-row"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Text Side */}
-          <div className="p-8 md:p-12 lg:w-1/2 flex flex-col justify-center bg-gradient-to-br from-slate-50 to-white">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div>
-                <h3 className="text-2xl font-extrabold text-slate-900 leading-tight">
-                  {currentText.seminar.name}
-                </h3>
-                <span className="text-sm font-bold text-primary mt-1 block uppercase tracking-wide">
-                  {currentText.seminar.badge}
-                </span>
-              </div>
-              <div className="p-3 bg-white rounded-xl shadow-sm border border-slate-100 shrink-0">
-                {currentText.seminar.icon}
-              </div>
+        {/* --- SEMINAR HIGHLIGHT (Journey Aesthetic) --- */}
+        <div className="max-w-md mx-auto mb-24">
+          <motion.div 
+            className="flex flex-col h-full overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Image Container */}
+            <div className="w-full h-64 sm:h-80 bg-[#2d0a11] overflow-hidden relative">
+              <img 
+                src="/SeminarPoster.jpeg" 
+                alt={currentText.seminar.name} 
+                className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
             </div>
 
-            <div className="mb-8 pb-8 border-b border-slate-200">
-              <div className="flex items-baseline gap-2">
-                <span className="text-5xl font-black text-slate-900">{currentText.seminar.price}</span>
+            {/* Text Container */}
+            <div className="p-6 md:p-8 flex flex-col flex-grow text-center items-center bg-white">
+              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+                {currentText.seminar.icon} {currentText.seminar.badge}
+              </div>
+              
+              <h3 className="font-extrabold text-2xl mb-2 text-slate-900">
+                {currentText.seminar.name}
+              </h3>
+              
+              <div className="mb-6 flex items-baseline justify-center gap-2">
+                <span className="text-4xl font-black text-slate-900">{currentText.seminar.price}</span>
                 <span className="text-slate-500 font-bold">{currentText.seminar.period}</span>
               </div>
-              <div className="mt-2 text-slate-400 font-semibold">
-                <span className="line-through mr-1">{currentText.seminar.originalPrice}</span> Normal Price
-              </div>
+              
+              <ul className="space-y-3 mb-8 text-left w-full">
+                {currentText.seminar.features.map((f, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 font-medium">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span className="leading-tight">{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Button 
+                className="w-full font-bold h-12 mt-auto bg-[#800000] hover:bg-[#600000] text-white shadow-md transition-transform" 
+                onClick={() => handleActionClick(currentText.seminar.actionLink)}
+              >
+                {currentText.btnText}
+              </Button>
             </div>
-
-            <ul className="space-y-4 mb-8">
-              {currentText.seminar.features.map((f, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-[15px] text-slate-700 font-medium">
-                  <Check className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span className="leading-tight">{f}</span>
-                </li>
-              ))}
-            </ul>
-
-            <Button 
-              className="w-full font-bold h-14 text-base bg-[#800000] hover:bg-[#600000] text-white shadow-md transition-transform hover:-translate-y-0.5" 
-              onClick={() => handleActionClick(currentText.seminar.actionLink)}
-            >
-              {currentText.btnText}
-            </Button>
-          </div>
-
-          {/* Poster Side */}
-          <div className="lg:w-1/2 bg-[#2d0a11] flex items-center justify-center p-6 border-t lg:border-t-0 lg:border-l border-slate-200">
-            {/* Make sure "SeminarPoster.jpeg" is in your public folder! */}
-            <img 
-              src="/SeminarPoster.jpeg" 
-              alt="Seminar Rescue Math" 
-              className="w-full h-auto max-h-[500px] object-contain rounded-xl shadow-2xl"
-            />
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* --- PRICING PLANS HEADER --- */}
         <motion.div
