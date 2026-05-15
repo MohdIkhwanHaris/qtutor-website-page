@@ -1,6 +1,7 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Star, CalendarDays, Clock, Users, User, Target, Flame } from "lucide-react";
-import { motion } from "framer-motion";
+import { Check, Star, CalendarDays, Clock, Users, User, Flame } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext"; 
 
 const content = {
@@ -155,13 +156,43 @@ const content = {
 const PricingSection = () => {
   const { language } = useLanguage(); 
   const currentText = content[language]; 
+  
+  const [isPersonalExpanded, setIsPersonalExpanded] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsPersonalExpanded(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleActionClick = (link: string) => {
     window.open(link, "_blank");
   };
 
+  const strictLayoutTransition = { 
+    type: "tween", 
+    ease: "easeInOut", 
+    duration: 0.35 
+  } as const;
+
   return (
     <section id="pricing" className="py-16 md:py-24 bg-slate-50/50 relative overflow-hidden">
+      
+      <AnimatePresence>
+        {isPersonalExpanded && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-20 bg-slate-900/10 backdrop-blur-[2px]"
+            onClick={() => setIsPersonalExpanded(false)}
+          />
+        )}
+      </AnimatePresence>
+
       <div className="container px-4 md:px-6 relative z-30">
         
         {/* --- SEMINAR HIGHLIGHT BANNER --- */}
@@ -252,7 +283,7 @@ const PricingSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="relative rounded-3xl p-8 flex flex-col bg-white w-full lg:w-[35%] border-2 border-primary shadow-xl lg:-translate-y-2 z-20"
+            className="relative rounded-3xl p-6 md:p-8 flex flex-col bg-white w-full lg:w-[35%] border-2 border-primary shadow-xl lg:-translate-y-2 z-20"
           >
             <div className="absolute -top-3.5 inset-x-0 flex justify-center pointer-events-none z-30">
               <div className="inline-flex items-center gap-1.5 bg-[#800000] text-white text-xs font-black px-4 py-1.5 rounded-full shadow-md uppercase tracking-wide">
@@ -308,11 +339,10 @@ const PricingSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="relative rounded-3xl p-8 flex flex-col bg-white w-full lg:w-[65%] border border-slate-200 shadow-md z-10"
+            className="relative rounded-3xl p-6 md:p-8 flex flex-col bg-white w-full lg:w-[65%] border border-slate-200 shadow-md z-10"
           >
-            <div className="flex flex-col xl:flex-row gap-8 h-full">
+            <div className="flex flex-col xl:flex-row gap-6 xl:gap-8 h-full">
               
-              {/* Personal Class Info */}
               <div className="flex flex-col flex-1 min-w-0">
                 <div className="mb-6 flex items-center justify-between gap-3">
                   <div>
@@ -350,13 +380,15 @@ const PricingSection = () => {
 
               {/* Personal Class Static Pricing Table */}
               <div className="w-full xl:w-[380px] shrink-0">
-                <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 h-full flex flex-col justify-center">
-                  <h4 className="font-extrabold text-slate-900 mb-6 text-lg">Package Pricing</h4>
-                  <div className="flex flex-col gap-4">
+                <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 md:p-6 h-full flex flex-col justify-center">
+                  <h4 className="font-extrabold text-slate-900 mb-4 md:mb-6 text-lg">Package Pricing</h4>
+                  <div className="flex flex-col gap-3 md:gap-4">
                     {currentText.plans[1].extraDetails?.map((detail, idx) => (
-                      <div key={idx} className="flex justify-between items-center bg-white px-6 py-4 rounded-xl shadow-sm border border-slate-100 gap-4 transition-colors hover:border-primary/30">
-                        <span className="text-xs font-black text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
-                        <span className="text-[15px] font-black text-primary whitespace-nowrap shrink-0">{detail.value}</span>
+                      <div key={idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-4 sm:px-6 sm:py-4 rounded-xl shadow-sm border border-slate-100 gap-1 sm:gap-4 transition-colors hover:border-primary/30">
+                        {/* Price (Top on Mobile, Right on Desktop) */}
+                        <span className="text-base sm:text-[15px] font-black text-primary whitespace-nowrap shrink-0 order-1 sm:order-2">{detail.value}</span>
+                        {/* Label (Bottom on Mobile, Left on Desktop) */}
+                        <span className="text-[11px] sm:text-xs font-black text-slate-500 uppercase tracking-wider leading-tight order-2 sm:order-1">{detail.label}</span>
                       </div>
                     ))}
                   </div>
@@ -365,7 +397,6 @@ const PricingSection = () => {
 
             </div>
 
-            {/* Personal Class Button (Spans full width at bottom) */}
             <div className="mt-8 pt-4 border-t border-slate-100">
               <Button 
                 variant="outline"
