@@ -217,7 +217,6 @@ const PricingSection = () => {
 
           {/* Poster Side */}
           <div className="lg:w-1/2 bg-[#2d0a11] flex items-center justify-center p-6 border-t lg:border-t-0 lg:border-l border-slate-200">
-            {/* Make sure "SeminarPoster.jpeg" is in your public folder! */}
             <img 
               src={`${import.meta.env.BASE_URL}SeminarPoster.jpeg`}
               alt="Seminar Rescue Math" 
@@ -350,12 +349,14 @@ const PricingSection = () => {
               </div>
 
               {/* Personal Class Static Pricing Table */}
-              <div className="w-full xl:w-[320px] shrink-0">
+              {/* CHANGED: Increased w-[320px] to w-[350px] for more breathing room */}
+              <div className="w-full xl:w-[350px] shrink-0">
                 <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 h-full flex flex-col justify-center">
                   <h4 className="font-extrabold text-slate-900 mb-6 text-lg">Package Pricing</h4>
                   <div className="flex flex-col gap-4">
                     {currentText.plans[1].extraDetails?.map((detail, idx) => (
-                      <div key={idx} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 gap-4 transition-colors hover:border-primary/30">
+                      {/* CHANGED: Swapped p-4 for px-5 py-4 to create thicker bumpers on the left/right */}
+                      <div key={idx} className="flex justify-between items-center bg-white px-5 py-4 rounded-xl shadow-sm border border-slate-100 gap-4 transition-colors hover:border-primary/30">
                         <span className="text-xs font-black text-slate-500 uppercase tracking-wider shrink-0">{detail.label}</span>
                         <span className="text-[15px] font-black text-primary whitespace-nowrap shrink-0">{detail.value}</span>
                       </div>
