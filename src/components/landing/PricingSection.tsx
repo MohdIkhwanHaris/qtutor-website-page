@@ -26,7 +26,7 @@ const content = {
         "Access to full class recordings",
         "Interactive Quizizz sessions",
       ],
-      actionLink: "https://wa.me/601137087872?text=" + encodeURIComponent("Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?"),
+      actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScJHreR0QPEX_YBN2xhV1vonutnURTCDdJlnPm8o2aZD-XuxQ/viewform?usp=sharing&ouid=115890506777444278377",
     },
     plans: [
       {
@@ -99,7 +99,7 @@ const content = {
         "Akses Rakaman Kelas",
         "Kuiz Interaktif Quizizz",
       ],
-      actionLink: "https://wa.me/601137087872?text=" + encodeURIComponent("Hai QTutor! Saya berminat untuk menyertai Seminar Rescue Matematik (RM39 Early Bird). Boleh saya dapatkan maklumat lanjut?"),
+      actionLink: "https://docs.google.com/forms/d/e/1FAIpQLScJHreR0QPEX_YBN2xhV1vonutnURTCDdJlnPm8o2aZD-XuxQ/viewform?usp=sharing&ouid=115890506777444278377",
     },
     plans: [
       {
